@@ -1,7 +1,7 @@
 import { pool } from "../database/conexion.js";
 import { validationResult } from "express-validator";
 
-// Listar mascotas
+// listar mascotas
 export const listarMascotas = async (req, res) => {
 	try {
 		const [result] = await pool.query("SELECT * FROM mascotas");
@@ -25,7 +25,7 @@ export const listarMascotas = async (req, res) => {
 	}
 };
 
-// Registrar mascota
+// registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {
 		const { nombre, genero, raza, edad, ubicacion, descripcion } = req.body;
@@ -58,7 +58,7 @@ export const registrarMascota = async (req, res) => {
 	}
 };
 
-// Actualizar mascota
+// actualizar mascota por ID
 export const actualizarMascota = async (req, res) => {
 	try {
 		const { id_mascota } = req.params;
@@ -91,24 +91,51 @@ export const actualizarMascota = async (req, res) => {
 	}
 };
 
-// Eliminar mascota
+// eliminar mascota por ID
 export const eliminarMascota = async (req, res) => {
 	try {
 		const { id_mascota } = req.params;
-		const { nombre, genero, raza, edad, ubicacion, descripcion } = req.body;
 		const [result] = await pool.query(
-			"DELETE FROM mascotas WHERE id_mascota=?"
+			"DELETE FROM Mascotas WHERE id_mascota=?",
+			[id_mascota]
 		);
 		if (result.affectedRows > 0) {
 			res.status(200).json({
 				status: 200,
-				message: "Se elimino la mascota",
-				data: result,
+				message: "Se eliminó la mascota",
 			});
 		} else {
 			res.status(403).json({
 				status: 403,
-				message: "No se elimino la mascota",
+				message: "No se eliminó la mascota",
+			});
+		}
+	} catch (error) {
+		res.status(500).json({
+			status: 500,
+			message: "Error en el servidor " + error.message,
+		});
+	}
+};
+
+// buscar mascota por ID
+export const buscarMascota = async (req, res) => {
+	try {
+		const { id_mascota } = req.params;
+		const [result] = await pool.query(
+			"SELECT * FROM Mascotas WHERE id_mascota=?",
+			[id_mascota]
+		);
+		if (result.length > 0) {
+			res.status(200).json({
+				status: 200,
+				message: "Mascota encontrada",
+				data: result[0],
+			});
+		} else {
+			res.status(403).json({
+				status: 403,
+				message: "Mascota no encontrada",
 			});
 		}
 	} catch (error) {
