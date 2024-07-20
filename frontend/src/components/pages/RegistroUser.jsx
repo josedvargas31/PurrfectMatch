@@ -1,23 +1,21 @@
 import React, { useState } from 'react'
-import imagenes from '../../styles/imagenes'
 import { Link, useNavigate } from 'react-router-dom'
-import swal from 'sweetalert2'
+// Import imagenes
+import imagenes from '../../styles/imagenes'
+// Import conexion con el servidor
 import axiosClient from '../axiosClient'
-
 // Import de nextUI
 import { Input } from "@nextui-org/react";
 import { EyeFilledIcon } from '../nextUI/EyeFilledIcon'
 import { EyeSlashFilledIcon } from '../nextUI/EyeSlashFilledIcon'
 import { Select } from "@nextui-org/select";
+import { Button } from "@nextui-org/button";
+// Import alertas 
 import Swal from 'sweetalert2'
 
 function RegistroUser() {
-
+    // navegacion para poder pasar a otra vista
     const navigate = useNavigate();
-
-    const [mensaje, setMensaje] = useState('');
-    const [modalAccion, setModalAccion] = useState(false);
-
     // Const donde almacena los datos del formulario por medio de formData
     const [formData, setFormData] = useState({
         identificacion: '',
@@ -56,16 +54,21 @@ function RegistroUser() {
         }
     }
     // const para ver el esatdo dinamico del eye del password
-    const [isVisble, setIsVsible] = React.useState(false);
+    const [isVisible, setIsVisible] = React.useState(false);
 
     // /toggleVisibility alterna la visibilidad de la contraseña entre texto y puntos.
-    const toggleVisibility = () => setIsVsible(!isVisble);
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
+    // color de los inputs
+    const colors = [
+        "warning",
+    ];
 
     return (
-        <div>
-            <>
-                <div className="flex items-center justify-center bg-[#EDEBDE] min-h-screen p4 w-full">
-                    <div className="flex flex-col p-5 m-4 md:p-5">
+        <>
+            <div className="flex items-center justify-center bg-[#EDEBDE] min-h-screen p-4 w-full">
+                <div className='relative flex flex-col m-2 space-y-5 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 '>
+                    <div className="flex flex-col p-8 md:p-20">
                         <Link className='mb-2' to='/' >
                             {/* <Icon /> */}
 
@@ -73,70 +76,104 @@ function RegistroUser() {
                         <span className="mb-2 text-4xl font-bold text-center">Registro</span>
                         <form onSubmit={hangleSubmit}>
                             <div className="py-2">
+                            {colors.map((color) => (
                                 <Input
                                     type='number'
                                     label='Identificación'
-                                    variant='bordered'
+                                    color={color}
                                     className='w-80'
                                     name='identificacion'
                                     value={formData.identificacion}
                                     onChange={handleChange}
                                 />
+                            ))}
                             </div>
                             <div className="py-2">
+                                 {colors.map((color) => (
                                 <Input
                                     type='text'
-                                    lable='Ingrese sus nombres completos'
-                                    variant='bordered'
+                                    label='Ingrese sus nombres completos'
+                                    color={color}
                                     className='w-80'
                                     name='nombres'
                                     id='nombres'
                                     value={formData.nombres}
                                     onChange={handleChange}
                                 />
+                            ))}
                             </div>
                             <div className="py-2">
+                                 {colors.map((color) => (
                                 <Input
                                     type='text'
                                     label='Ingrese sus apellidos completos'
-                                    variant='bordered'
+                                    color={color}
                                     className='w-80'
                                     name='apellidos'
                                     id='apellidos'
                                     value={formData.apellidos}
                                     onChange={handleChange}
                                 />
+                            ))}
                             </div>
                             <div className="py-2">
+                                 {colors.map((color) => (
                                 <Input
                                     type='email'
                                     label='Ingrese su correo'
-                                    variant='bordered'
+                                    color={color}
                                     className='w-80'
                                     name='correo'
                                     id='correo'
                                     value={formData.correo}
                                     onChange={handleChange}
                                 />
+                            ))}
                             </div>
                             <div className="py-2">
+                                 {colors.map((color) => (
                                 <Input
-                                    type='Ingrese su contraseña'
-                                    variant='bordered'
+                                    label='Ingrese su contraseña'
+                                    color={color}
                                     name='password'
                                     id='password'
                                     value={formData.password}
                                     onChange={handleChange}
-                                   /*  endContent={
-                                        
-                                    } */
+                                    endContent={
+                                        <button type="button" onClick={toggleVisibility}>
+                                            {isVisible ? (
+                                                <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                            ) : (
+                                                <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none mb-2" />
+                                            )}
+                                        </button>
+                                    }
+                                    type={isVisible ? "text" : "password"}
+                                    className="max-w-xs"
                                 />
+                            ))}
                             </div>
+                            <div className="py-2">
+                                 {colors.map((color) => (
+                                <Select
+                                    color={color}
+                                    label='usuario'
+                                    className='max-w-xs'
+                                    isDisabled
+                                />
+                            ))}
+                            </div>
+                            <Button color="warning" className='mt-4 w-full text-white p-2 '>
+                                Registrar
+                            </Button>
                         </form>
                     </div>
+                    <div className='relative'>
+                        <img src={imagenes.imgRegistroPets} className='w-[500px] h-full hidden rounded-r-2xl md:block object-cover' />
+                    </div>
                 </div>
-            </>
-        </div>
+            </div>
+        </>
     )
 }
 
