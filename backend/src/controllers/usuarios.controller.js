@@ -33,13 +33,13 @@ export const registrarUsuario = async (req, res) => {
 			nombres,
 			apellidos,
 			correo,
-			telefono,
+			numero_cel,
 			password,
 			rol,
 		} = req.body;
 		const [result] = await pool.query(
-			"INSERT INTO usuarios (identificacion, nombres, apellidos, correo, telefono, password, rol) VALUES (?,?,?,?,?,?,?)",
-			[identificacion, nombres, apellidos, correo, telefono, password, rol]
+			"INSERT INTO usuarios (identificacion, nombres, apellidos, correo, numero_cel, password, rol) VALUES (?,?,?,?,?,?,?)",
+			[identificacion, nombres, apellidos, correo, numero_cel, password, rol]
 		);
 		/* validación de los datos de registrar usuario */
 		const errors = validationResult(req);
@@ -49,7 +49,7 @@ export const registrarUsuario = async (req, res) => {
 		if (result.affectedRows > 0) {
 			res.status(200).json({
 				status: 200,
-				message: "Se regsitro el ususario",
+				message: "Se registro el usuario",
 			});
 		} else {
 			res.status(403).json({
@@ -65,20 +65,15 @@ export const registrarUsuario = async (req, res) => {
 	}
 };
 
-// actualizar ususario
+// actualizar usuario
 export const actualizarUsuario = async (req, res) => {
 	try {
-		const { identificacion } = req.params;
-		const { nombres, apellidos, correo, telefono, password, rol } = req.body;
+		const { id_usuario } = req.params;
+		const { identificacion, nombres, apellidos, correo, numero_cel, password, rol } = req.body;
 		const [result] = await pool.query(
-			"UPDATE usuarios SET nombres=?, apellidos=?, correo=?, telefono=?, password=?, rol=? WHERE identificacion=?",
-			[identificacion, nombres, apellidos, correo, telefono, password, rol]
+			"UPDATE usuarios SET identificacion=?, nombres=?, apellidos=?, correo=?, numero_cel=?, password=?, rol=? WHERE id_usuario=?",
+			[id_usuario, identificacion, nombres, apellidos, correo, numero_cel, password, rol]
 		);
-        /* validación de los datos de actualizar usuario */
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(404).json({ errors: errors.array() });
-		}
 		if (result.affectedRows > 0) {
 			res.status(200).json({
 				status: 200,
@@ -98,12 +93,12 @@ export const actualizarUsuario = async (req, res) => {
 	}
 };
 
-// Eliminar ususario
+// eliminar usuario por ID
 export const eliminarUsuario = async (req, res) => {
 	try {
-		const { identificacion } = req.params;
+		const { id_usuario } = req.params;
 		const [result] = await pool.query(
-			"DELETE FROM usuarios WHERE identificacion=?"
+			"DELETE FROM usuarios WHERE id_usuario=?", [id_usuario]
 		);
 		if (result.affectedRows > 0) {
 			res.status(200).json({
@@ -123,3 +118,28 @@ export const eliminarUsuario = async (req, res) => {
 		});
 	}
 };
+
+// buscar usuario por ID
+export const buscarUsuario = async (req, res) => {
+	try {
+	  const { id_usuario } = req.params;
+	  const [result] = await pool.query("SELECT * FROM Usuarios WHERE id_usuario=?", [id_usuario]);
+	  if (result.length > 0) {
+		res.status(200).json({
+		  status: 200,
+		  message: "Usuario encontrado",
+		  data: result[0],
+		});
+	  } else {
+		res.status(403).json({
+		  status: 403,
+		  message: "Usuario no encontrado",
+		});
+	  }
+	} catch (error) {
+	  res.status(500).json({
+		status: 500,
+		message: "Error en el servidor " + error.message,
+	  });
+	}
+  };

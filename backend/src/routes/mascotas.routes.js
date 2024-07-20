@@ -1,17 +1,22 @@
 import { Router } from "express";
 import {
-	actualizarMascota,
-	eliminarMascota,
 	listarMascotas,
 	registrarMascota,
+	actualizarMascota,
+	eliminarMascota,
+	buscarMascota,
 } from "../controllers/mascotas.controller.js";
-import { validateActualizarMascota, validateRegistroMascota } from "../validation/mascota.validation.js";
+import {
+	validateRegistroMascota,
+	validateActualizarMascota,
+} from "../validation/mascota.validation.js";
 
-const rutaMascota = Router();
+const mascotaRoutes = Router();
 
-rutaMascota.get("/listarmascotas", listarMascotas);
-rutaMascota.post("/registrarmascota", validateRegistroMascota, registrarMascota);
-rutaMascota.put("/actualizarmascota", validateActualizarMascota, actualizarMascota); 
-rutaMascota.delete("/eliminarmascota", eliminarMascota); 
+mascotaRoutes.get("/listar", listarMascotas);
+mascotaRoutes.post("/registrar", validateRegistroMascota, registrarMascota);
+mascotaRoutes.put("/actualizar/:id_mascota", validateActualizarMascota, actualizarMascota);
+mascotaRoutes.delete("/eliminar/:id_mascota", eliminarMascota);
+mascotaRoutes.get("/buscar/:id_mascota", buscarMascota);
 
-export default rutaMascota;
+export default mascotaRoutes;

@@ -1,10 +1,22 @@
-import {Router} from "express";
-import { actualizarUsuario, eliminarUsuario, listarUsuarios, registrarUsuario } from "../controllers/usuarios.controller";
-import { validateActualizarUsuario, validateRegistroUsuario } from "../validation/usuario.validation.js";
+import { Router } from "express";
+import {
+	listarUsuarios,
+	registrarUsuario,
+	actualizarUsuario,
+	eliminarUsuario,
+	buscarUsuario,
+} from "../controllers/usuarios.controller.js";
+import {
+	validateRegistroUsuario,
+	validateActualizarUsuario,
+} from "../validation/usuario.validation.js";
 
-const rutaUsuario = Router()
+const usuarioRoutes = Router();
 
-rutaUsuario.get("/listarusuarios", listarUsuarios)
-rutaUsuario.get("/registrarusuario", validateRegistroUsuario, registrarUsuario)
-rutaUsuario.get("/actualizarusuario", validateActualizarUsuario, actualizarUsuario)
-rutaUsuario.get("/eliminarusuario", eliminarUsuario)
+usuarioRoutes.get("/listar", listarUsuarios);
+usuarioRoutes.post("/registrar", validateRegistroUsuario, registrarUsuario);
+usuarioRoutes.put("/actualizar/:id_usuario", validateActualizarUsuario, actualizarUsuario);
+usuarioRoutes.delete("/eliminar/:id_usuario", eliminarUsuario);
+usuarioRoutes.get("/buscar/:id_usuario", buscarUsuario);
+
+export default usuarioRoutes;

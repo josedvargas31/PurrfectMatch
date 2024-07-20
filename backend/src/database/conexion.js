@@ -5,5 +5,5 @@ export const pool = createPool({
 	user: "root",
 	port: 3306,
 	password: "",
-	database: "adopt_pets",
+	database: "purrfect_match",
 });

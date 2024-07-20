@@ -4,32 +4,122 @@ import { check } from "express-validator";
 export const validateRegistroUsuario = [
 	check(
 		"identificacion",
-		"La identificacion del usuario es obligatoria"
-	).notEmpty(),
-	check("npombres", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("apellidos", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("correo", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("telefono", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("password", "La identificacion del usuario es obligatoria").notEmpty(),
+		"Identificación es obligatoria y debe contener solo números"
+	)
+		.not()
+		.isEmpty()
+		.isNumeric(),
+
+	check(
+		"nombres",
+		"El nombre es obligatorio y debe contener solo letras, máximo 50 caracteres"
+	)
+		.not()
+		.isEmpty()
+		.isLength({ max: 50 })
+		.matches(/^[A-Za-z\s]+$/),
+
+	check(
+		"apellidos",
+		"El apellido es obligatorio y debe contener solo letras, máximo 50 caracteres"
+	)
+		.not()
+		.isEmpty()
+		.isLength({ max: 50 })
+		.matches(/^[A-Za-z\s]+$/),
+
+	check("correo", "Correo es obligatorio y debe ser un correo válido")
+		.not()
+		.isEmpty()
+		.isEmail()
+		.normalizeEmail(),
+
+	check(
+		"numero_cel",
+		"El número de celular es obligatorio y debe contener solo números, máximo 15 caracteres"
+	)
+		.not()
+		.isEmpty()
+		.isLength({ max: 15 })
+		.isNumeric(),
+
+	check(
+		"password",
+		"La contraseña es obligatoria y debe tener al menos 6 caracteres"
+	)
+		.not()
+		.isEmpty()
+		.isLength({ min: 6 }),
+
 	check(
 		"rol",
-		"El rol solo deben ser estas opciones administrador o usuario"
-	).isIn("administrador", "usuario"),
+		"Rol es obligatorio y debe ser uno de los siguientes valores: administrador, usuario"
+	)
+		.not()
+		.isEmpty()
+		.isIn(["administrador", "usuario"]),
 ];
 
 // validación de actualizar usuario
 export const validateActualizarUsuario = [
 	check(
 		"identificacion",
-		"La identificacion del usuario es obligatoria"
-	).notEmpty(),
-	check("npombres", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("apellidos", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("correo", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("telefono", "La identificacion del usuario es obligatoria").notEmpty(),
-	check("password", "La identificacion del usuario es obligatoria").notEmpty(),
+		"Identificación es obligatorio y debe contener solo números"
+	)
+		.optional()
+		.not()
+		.isEmpty()
+		.isNumeric(),
+
+	check(
+		"nombres",
+		"El nombre es obligatorio y debe contener solo letras, máximo 50 caracteres"
+	)
+		.optional()
+		.not()
+		.isEmpty()
+		.isLength({ max: 50 })
+		.matches(/^[A-Za-z\s]+$/),
+
+	check(
+		"apellidos",
+		"El apellido es obligatorio y debe contener solo letras, máximo 50 caracteres"
+	)
+		.optional()
+		.not()
+		.isEmpty()
+		.isLength({ max: 50 })
+		.matches(/^[A-Za-z\s]+$/),
+
+	check("correo", "Correo debe ser un correo válido")
+		.optional()
+		.not()
+		.isEmpty()
+		.isEmail()
+		.normalizeEmail(),
+
+	check(
+		"numero_cel",
+		"El número de celular debe contener solo números, máximo 15 caracteres"
+	)
+		.optional()
+		.not()
+		.isEmpty()
+		.isLength({ max: 15 })
+		.isNumeric(),
+
+	check("password", "La contraseña debe tener al menos 6 caracteres")
+		.optional()
+		.not()
+		.isEmpty()
+		.isLength({ min: 6 }),
+
 	check(
 		"rol",
-		"El rol solo deben ser estas opciones administrador o usuario"
-	).isIn("administrador", "usuario"),
+		"Rol debe ser uno de los siguientes valores: administrador, usuario"
+	)
+		.optional()
+		.not()
+		.isEmpty()
+		.isIn(["administrador", "usuario"]),
 ];
