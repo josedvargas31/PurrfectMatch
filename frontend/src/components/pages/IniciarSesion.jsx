@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 // Import imagenes
 import imagenes from '../../styles/imagenes'
+import iconos from '../../styles/iconos'
+import Icon from '../atomos/IconVolver'
 // Import conexion con el servidor
 import axiosClient from '../axiosClient'
 // Import de nextUI
@@ -20,7 +22,7 @@ function IniciarSesion() {
     const correo = useRef(null);
     const password = useRef(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
@@ -40,47 +42,42 @@ function IniciarSesion() {
                 correo: emailValue,
                 password: passwordValue
             }
-            axiosClient.post('/validacion', data).then((response) => {
-                console.log('datos enviados en la validación: ', response)
-                // condicional que envia un estado, envia el token y el usuario a la consola
-                if (response.status === 200) {
-                    const { token, user } = response.data
-                    localStorage.setItem('token', token)
-                    localStorage.setItem('user', JSON.stringify(response.data.user[0]))
-                    console.log(response.data.user[0])
-                    Swal.fire({
-                        position: "top-center",
-                        icon: "success",
-                        title: "Bienvenido",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+            const response = await axiosClient.post('/validacion', data);
+            console.log('datos enviados en la validación: ', response);
 
-                    const userRol = user[0]?.rol
-                    //condicional para separar los roles
-                    if (userRol === 'usuario') {
-                        navigate('/usuarop')
-                    } else if (userRol === 'administrador') {
-                        navigate('/Inicio')
+            if (response.status === 200) {
+                const { token, user } = response.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(user[0])); // Asegúrate de que user[0] tiene la estructura correcta
+                console.log(user[0]);
 
-                    }
-                    //condicionales que verifican si hay algo mal
-                } else {
-                    console.log('Response', response)
-                    setMensaje('Credenciales incorrectas')
-                    setModalAcciones(true)
-                    Swal.fire({
-                        position: "top-center",
-                        icon: "error",
-                        title: "Datos Incorrectos",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Bienvenido",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                const userRol = user[0]?.rol;
+                if (userRol === 'usuario') {
+                    navigate('/iniciouser');
+                } else if (userRol === 'administrador') {
+                    navigate('/inicioadmi');
                 }
-            })
+            } else {
+                console.log('Response', response);
+                Swal.fire({
+                    position: "top-center",
+                    icon: "error",
+                    title: "Datos Incorrectos",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         } catch (error) {
-            console.log(error)
-            alert('Error del servidor' + error)
+            console.log(error);
+            alert('Error del servidor' + error);
         }
     }
     // const para ver el esatdo dinamico del eye del password
@@ -89,8 +86,8 @@ function IniciarSesion() {
     // /toggleVisibility alterna la visibilidad de la contraseña entre texto y puntos.
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-     // color de los inputs
-     const colors = [
+    // color de los inputs
+    const colors = [
         "warning",
     ];
     return (
@@ -98,8 +95,8 @@ function IniciarSesion() {
             <div className="flex items-center justify-center bg-[#EDEBDE] min-h-screen p-4 w-full">
                 <div className='relative flex flex-col m-2 space-y-5 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 '>
                     <div className="flex justify-center flex-col p-5 m-4 md:p-5">
-                        <Link className='mb-5' to='/'>
-                            {/*  <Icon icon={v.iconoVolver} className='w-6 h-6' /> */}
+                        <Link className='mb-2' to='/' >
+                            <Icon icon={iconos.iconoVolver} className='w-6 h-6' />
                         </Link>
 
                         <span className="m-4 text-4xl font-bold">Inicio De Sesion</span>
@@ -113,6 +110,7 @@ function IniciarSesion() {
                                     label='Ingrese su correo'
                                     className='w-80'
                                     color={color}
+                                    key={color}
                                     name='correo'
                                     id='correo'
                                     ref={correo}
@@ -124,6 +122,7 @@ function IniciarSesion() {
                                 <Input
                                     label='Ingrese su contraseña'
                                     color={color}
+                                    key={color}
                                     name='password'
                                     id='password'
                                     ref={password}
