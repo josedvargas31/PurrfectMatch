@@ -1,20 +1,24 @@
-import multer from "multer";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-// Configurar el almacenamiento de archivos
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "public/usuarios");
-	},
-	filename: (req, file, cb) => {
-		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(
-			null,
-			file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
-		); // Nombre del archivo
-	},
-});
+// Middleware para manejar la subida de imágenes
+export const uploadImage = (req, res, next) => {
+  if (req.file) {
+    req.body.img = req.file.filename;
+  }
+  next();
+};
 
-const upload = multer({ storage: storage });
-
-export default upload;
+// Middleware para eliminar la imagen anterior (si existe)
+export const deleteImage = (req, res, next) => {
+  const { img } = req.body;
+  if (img) {
+    const filePath = path.join('uploads', img);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('No se pudo eliminar la imagen anterior:', err);
+      }
+    });
+  }
+  next();
+};
