@@ -2,7 +2,7 @@ import { pool } from "../database/conexion.js";
 import { validationResult } from "express-validator";
 
 // listar usuarios
-export const listarUsuarios = async (req, res) => {
+export const listarUsuariosA = async (req, res) => {
 	try {
 		const [result] = await pool.query("SELECT * FROM usuarios");
 		if (result.length > 0) {
@@ -26,7 +26,7 @@ export const listarUsuarios = async (req, res) => {
 };
 
 // registrar ususario
-export const registrarUsuario = async (req, res) => {
+export const registrarUsuarioA = async (req, res) => {
 	try {
 		const {
 			identificacion,
@@ -66,7 +66,7 @@ export const registrarUsuario = async (req, res) => {
 };
 
 // actualizar usuario
-export const actualizarUsuario = async (req, res) => {
+export const actualizarUsuarioA = async (req, res) => {
 	try {
 		const { id_usuario } = req.params;
 		const { identificacion, nombres, apellidos, correo, numero_cel, password, rol } = req.body;
@@ -94,7 +94,7 @@ export const actualizarUsuario = async (req, res) => {
 };
 
 // eliminar usuario por ID
-export const eliminarUsuario = async (req, res) => {
+export const eliminarUsuarioA = async (req, res) => {
 	try {
 		const { id_usuario } = req.params;
 		const [result] = await pool.query(
@@ -120,7 +120,7 @@ export const eliminarUsuario = async (req, res) => {
 };
 
 // buscar usuario por ID
-export const buscarUsuario = async (req, res) => {
+export const buscarUsuarioA = async (req, res) => {
 	try {
 	  const { id_usuario } = req.params;
 	  const [result] = await pool.query("SELECT * FROM Usuarios WHERE id_usuario=?", [id_usuario]);

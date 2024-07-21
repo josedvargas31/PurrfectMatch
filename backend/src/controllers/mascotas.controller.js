@@ -1,6 +1,6 @@
 import { pool } from "../database/conexion.js";
-import { validationResult } from "express-validator";
-
+/* import { validationResult } from "express-validator";
+ */
 // listar mascotas
 export const listarMascotas = async (req, res) => {
 	try {
@@ -25,29 +25,30 @@ export const listarMascotas = async (req, res) => {
 	}
 };
 
-// registrar mascota
+// Registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {
-		const { nombre, genero, raza, edad, ubicacion, descripcion } = req.body;
+	
+		const { nombre, genero, raza, edad, descripcion, estado, fk_id_usuario } =
+			req.body;
+		const foto = req.file ? req.file.filename : null;
+
+		console.log(req.body); // Verificar el cuerpo de la solicitud
 		const [result] = await pool.query(
-			"INSERT INTO mascotas (nombre, genero, raza, edad, ubicacion, descripcion) VALUES (?,?,?,?,?,?)",
-			[nombre, genero, raza, edad, ubicacion, descripcion]
+			"INSERT INTO Mascotas (nombre, genero, raza, edad, foto, descripcion, estado, fk_id_usuario) VALUES (?,?,?,?,?,?,?,?)",
+			[nombre, genero, raza, edad, foto, descripcion, estado, fk_id_usuario]
 		);
-		/* validación de datos del registro de la mascota */
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(404).json({ errors: errors.array() });
-		}
+
 		if (result.affectedRows > 0) {
 			res.status(200).json({
 				status: 200,
-				message: "Se registro con exito la mascota",
-				data: result,
+				message: "Se registró la mascota",
+				data: { ...req.body, foto },
 			});
 		} else {
 			res.status(403).json({
-				status: 200,
-				message: "No se registro la mascota",
+				status: 403,
+				message: "No se registró la mascota",
 			});
 		}
 	} catch (error) {
@@ -58,29 +59,55 @@ export const registrarMascota = async (req, res) => {
 	}
 };
 
-// actualizar mascota por ID
+// Actualizar mascota
 export const actualizarMascota = async (req, res) => {
 	try {
-		const { id_mascota } = req.params;
-		const { nombre, genero, raza, edad, ubicacion, descripcion } = req.body;
-		const [result] = await pool.query(
-			"UPDATE mascotas SET nombre=?, genero=?, raza=?, edad=?, ubicacion=?, descripcion=? WHERE id_mascota",
-			[id_mascota, nombre, genero, raza, edad, ubicacion, descripcion]
+		const { id } = req.params;
+		const { nombre, genero, raza, edad, descripcion, estado, fk_id_usuario } =
+			req.body;
+		const foto = req.file ? req.file.filename : null;
+
+		// Obtener la mascota actual
+		const [currentMascota] = await pool.query(
+			"SELECT foto FROM Mascotas WHERE id_mascota=?",
+			[id]
 		);
-		/* validación de datos de actualizar de la mascota */
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(404).json({ errors: errors.array() });
-		}
+		const currentFoto =
+			currentMascota.length > 0 ? currentMascota[0].foto : null;
+
+		// Actualizar mascota
+		const [result] = await pool.query(
+			"UPDATE Mascotas SET nombre=?, genero=?, raza=?, edad=?, foto=?, descripcion=?, estado=?, fk_id_usuario=? WHERE id_mascota=?",
+			[
+				nombre,
+				genero,
+				raza,
+				edad,
+				foto || currentFoto,
+				descripcion,
+				estado,
+				fk_id_usuario,
+				id,
+			]
+		);
+
 		if (result.affectedRows > 0) {
+			if (foto && currentFoto) {
+				// Eliminar la foto anterior del servidor
+				fs.unlink(path.join("public", currentFoto), (err) => {
+					if (err) console.error("No se pudo eliminar la foto anterior:", err);
+				});
+			}
+
 			res.status(200).json({
 				status: 200,
-				message: "Se actualizo con exito la mascota",
+				message: "Se actualizó la mascota",
+				data: { ...req.body, foto: foto || currentFoto },
 			});
 		} else {
 			res.status(403).json({
 				status: 403,
-				message: "No se actualizo la mascota",
+				message: "No se actualizó la mascota",
 			});
 		}
 	} catch (error) {
