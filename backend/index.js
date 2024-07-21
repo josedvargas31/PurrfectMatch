@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors"
 
 // enpoint 
-import usuarioAdmiRoutes from "./src/routes/usuariosA.routes.js";
+import usuarioRoutes from "./src/routes/usuarios.routes.js";
 import mascotaRoutes from "./src/routes/mascotas.routes.js";
 import vacunaRoutes from "./src/routes/vacunas.routes.js";
 
@@ -19,7 +19,7 @@ servidor.use(bodyParser.urlencoded({ extended: false }));
 // rutas 
 servidor.use(rutaValidacion);
 
-servidor.use("/usuario", usuarioAdmiRoutes);
+servidor.use("/usuario", usuarioRoutes);
 servidor.use("/mascota", mascotaRoutes);
 servidor.use("/vacuna", vacunaRoutes);
 

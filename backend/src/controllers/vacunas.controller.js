@@ -1,5 +1,5 @@
 import { pool } from "../database/conexion.js";
-
+import { validationResult } from "express-validator";
 // Listar vacunas
 export const listarVacunas = async (req, res) => {
   try {

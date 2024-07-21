@@ -11,7 +11,7 @@ export const validateRegistroVacuna = [
 
 	check(
 		"fecha_vacuna",
-		"La fecha de la vacuna es obligatoria y debe ser una fecha válida"
+		"La fecha de la vacuna es obligatoria y debe ser una fecha válida 0000-00-00"
 	)
 		.not()
 		.isEmpty()
