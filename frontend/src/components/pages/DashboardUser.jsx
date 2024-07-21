@@ -4,7 +4,7 @@ import React from 'react';
 /* import Header from '../organismos/header/Header';
 import iconos from '../../styles/iconos'; */
 
-function DashboardAdmi() {
+function DashboardUser() {
    /*  const [sidebarAbierto, setSidebarAbierto] = useState(false);
     const usoRef = useRef(null);
 
@@ -17,7 +17,7 @@ function DashboardAdmi() {
     }; */
     return (
         <div>
-            <div className='bg-slate-700'>Hola Admi </div>
+            <div className='bg-slate-700'>Hola Usi </div>
         </div>
         /* <>
             <div className={`contenidos : '60px' ${sidebarAbierto ? 'contenido-extendidos' : ''}`}>
@@ -49,4 +49,4 @@ function DashboardAdmi() {
     );
 }
 
-export default DashboardAdmi;
+export default DashboardUser;
