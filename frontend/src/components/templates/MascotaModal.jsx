@@ -1,11 +1,12 @@
 import React from 'react';
+import FormMascotas from '../moleculas/FormMascota';
 import { ModalAcciones } from '../organismos/Modal';
 
 function MascotaModal({ open, onClose, handleSubmit, actionLabel, title, initialData, mode }) {
     return (
         <>
             <ModalAcciones open={open} title={title} onClose={onClose} >
-                <MascotaModal initialData={initialData} mode={mode} handleSubmit={handleSubmit} onClose={onClose} actionLabel={actionLabel} />
+                <FormMascotas initialData={initialData} mode={mode} handleSubmit={handleSubmit} onClose={onClose} actionLabel={actionLabel} />
             </ModalAcciones>
 
         </>

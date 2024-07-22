@@ -84,6 +84,8 @@ function RegistroUser() {
                                         type='number'
                                         label='Identificación'
                                         color={color}
+                                        key={color}
+                                        variant="bordered"
                                         className='w-80'
                                         name='identificacion'
                                         value={formData.identificacion}
@@ -97,6 +99,8 @@ function RegistroUser() {
                                         type='text'
                                         label='Ingrese sus nombres completos'
                                         color={color}
+                                        key={color}
+                                        variant="bordered"
                                         className='w-80'
                                         name='nombres'
                                         id='nombres'
@@ -111,6 +115,8 @@ function RegistroUser() {
                                         type='text'
                                         label='Ingrese sus apellidos completos'
                                         color={color}
+                                        key={color}
+                                        variant="bordered"
                                         className='w-80'
                                         name='apellidos'
                                         id='apellidos'
@@ -125,6 +131,8 @@ function RegistroUser() {
                                         type='email'
                                         label='Ingrese su correo'
                                         color={color}
+                                        key={color}
+                                        variant="bordered"
                                         className='w-80'
                                         defaultValue="ejemplo@gmail.com"
                                         isInvalid={false}
@@ -142,6 +150,8 @@ function RegistroUser() {
                                         type='number'
                                         label='Ingrese su número de celular'
                                         color={color}
+                                        key={color}
+                                        variant="bordered"
                                         className='w-80'
                                         name='numero_cel'
                                         value={formData.numero_cel}
@@ -154,6 +164,8 @@ function RegistroUser() {
                                     <Input
                                         label='Ingrese su contraseña'
                                         color={color}
+                                        variant="bordered"
+                                        key={color}
                                         name='password'
                                         id='password'
                                         value={formData.password}
@@ -176,6 +188,7 @@ function RegistroUser() {
                                 {colors.map((color) => (
                                     <Select
                                         color={color}
+                                        key={color}
                                         label='usuario'
                                         className='max-w-xs'
                                         isDisabled
