@@ -23,7 +23,7 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/iniciosesion" element={<IniciarSesion />} />
             <Route path="/registro" element={<RegistroUser />} />
-            <Route path="/mascotas" element={<Mascotas />} />
+           
 
             {user && user.rol === 'administrador' && (
               <>
@@ -33,6 +33,7 @@ function App() {
             {user && user.rol === 'usuario' && (
               <>
                 <Route path="/iniciouser" element={<DashboardUser />} />
+                <Route path="/mascotas" element={<Mascotas />} />
               </>
             )}
           </Routes >

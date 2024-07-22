@@ -28,25 +28,25 @@ export const MascotasProvider = ({ children }) => {
                 setMascota(response.data)
             })
         } catch (error) {
-            console.log('Error' + error) ;
+            console.log('Error' + error);
         }
     }
-  return (
-    <MascotasContext.Provider
-        value={{
-            mascotas,
-            mascota,
-            idMascota,
-            setMascotas,
-            setMascota,
-            setMascotaId,
-            getMascotas,
-            getMascota
-        }}
-    >
-        {children}
-    </MascotasContext.Provider>
-  )
+    return (
+        <MascotasContext.Provider
+            value={{
+                mascotas,
+                mascota,
+                idMascota,
+                setMascotas,
+                setMascota,
+                setMascotaId,
+                getMascotas,
+                getMascota
+            }}
+        >
+            {children}
+        </MascotasContext.Provider>
+    )
 }
 
 export default MascotasContext

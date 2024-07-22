@@ -111,6 +111,7 @@ function IniciarSesion() {
                                     className='w-80'
                                     color={color}
                                     key={color}
+                                    variant="bordered"
                                     name='correo'
                                     id='correo'
                                     ref={correo}
@@ -123,6 +124,7 @@ function IniciarSesion() {
                                     label='Ingrese su contraseña'
                                     color={color}
                                     key={color}
+                                    variant="bordered"
                                     name='password'
                                     id='password'
                                     ref={password}
