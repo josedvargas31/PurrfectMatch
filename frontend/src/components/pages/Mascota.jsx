@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
 import MascotasContext from '../../context/MascotasContext.jsx';
@@ -15,7 +14,7 @@ import { Button } from "@nextui-org/button";
 import { PlusIcon } from "../nextUI/PlusIcon.jsx";
 import { SearchIcon } from "../nextUI/SearchIcon.jsx";
 import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Link } from "@nextui-org/react";
 import MascotaModal from '../templates/MascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
 import ButtonDesactivar from "../atomos/ButtonDesactivar.jsx";
@@ -103,7 +102,7 @@ export function Mascotas() {
                             width={270}
                             height={200}
                         />
-                          <p className="text-tiny uppercase font-bold">{mascota.descripcion}</p>
+                        <p className="text-tiny uppercase font-bold">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
                             <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
                             <ButtonDesactivar
@@ -164,7 +163,7 @@ export function Mascotas() {
                                 </Button>
                             </div>
                         </div>
-                       {/*  <div className="flex items-center justify-between mt-4">
+                        {/*  <div className="flex items-center justify-between mt-4">
                             <span className="text-default-400 text-small">Total {filteredItems.length} Resultados</span>
                             <label className="flex items-center text-default-400 text-small">
                                 Columnas por página:
@@ -270,26 +269,36 @@ export function Mascotas() {
 
     return (
         <>
-         <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
-            <AccionesModal
-                isOpen={modalAcciones}
-                onClose={() => setModalAcciones(false)}
-                label={mensaje}
-            />
-            <MascotaModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                title={mode === 'create' ? 'Registrar mascotas' : 'Actualizar mascotas'}
-                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
-                initialData={initialData}
-                handleSubmit={handleSubmit}
-                mode={mode}
-            />
-            <Ejemplo
-                mascotas={mascotas}
-            />
-        </div>
-    </>
-    
+            <div className="flex flex-col items-center p-4 w-full">
+                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md">
+                    <h1 className="text-3xl font-semibold">Perrfect Match</h1>
+                    <nav className="flex-grow flex justify-center space-x-24">
+                        <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>
+                        <Link href="/notificaciones" color="warning" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                    </nav>
+                    {/*   <span className="hover:text-[#c5296c] text-[#FA67A7] cursor-pointer">Notificaciones</span> */}
+                </header>
+            </div>
+            <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
+                <AccionesModal
+                    isOpen={modalAcciones}
+                    onClose={() => setModalAcciones(false)}
+                    label={mensaje}
+                />
+                <MascotaModal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    title={mode === 'create' ? 'Registrar mascotas' : 'Actualizar mascotas'}
+                    actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
+                    initialData={initialData}
+                    handleSubmit={handleSubmit}
+                    mode={mode}
+                />
+                <Ejemplo
+                    mascotas={mascotas}
+                />
+            </div>
+        </>
+
     );
 }
