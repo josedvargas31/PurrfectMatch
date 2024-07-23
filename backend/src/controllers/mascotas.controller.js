@@ -61,6 +61,68 @@ export const iniciarAdopcion = async (req, res) => {
         });
     }
 };
+// cambio de estado a adoptado a adaptar
+export const administrarAdopcion = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { id_mascota } = req.params;
+        const { accion } = req.body; // "aceptar" o "denegar"
+
+        // Verificar si la mascota existe
+        const [mascota] = await pool.query("SELECT * FROM mascotas WHERE id_mascota = ?", [id_mascota]);
+
+        if (mascota.length > 0) {
+            if (accion === 'aceptar') {
+                // Eliminar la mascota de la base de datos
+                const [result] = await pool.query("DELETE FROM mascotas WHERE id_mascota = ?", [id_mascota]);
+                if (result.affectedRows > 0) {
+                    res.status(200).json({
+                        status: 200,
+                        message: 'La mascota ha sido adoptada y eliminada de la base de datos'
+                    });
+                } else {
+                    res.status(404).json({
+                        status: 404,
+                        message: 'No se pudo eliminar la mascota de la base de datos'
+                    });
+                }
+            } else if (accion === 'denegar') {
+                // Cambiar el estado a "adoptar"
+                const [result] = await pool.query("UPDATE mascotas SET estado = 'adoptar' WHERE id_mascota = ?", [id_mascota]);
+                if (result.affectedRows > 0) {
+                    res.status(200).json({
+                        status: 200,
+                        message: 'La adopción fue denegada y la mascota está disponible para adopción nuevamente'
+                    });
+                } else {
+                    res.status(404).json({
+                        status: 404,
+                        message: 'No se pudo actualizar el estado de la mascota'
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: 400,
+                    message: 'Acción no válida'
+                });
+            }
+        } else {
+            res.status(404).json({
+                status: 404,
+                message: 'No se encontró la mascota'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: 'Error en el sistema: ' + error.message
+        });
+    }
+};
 // Registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {

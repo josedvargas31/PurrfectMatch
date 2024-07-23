@@ -6,6 +6,7 @@ import {
   eliminarMascota,
   buscarMascota,
   iniciarAdopcion,
+  administrarAdopcion,
 } from '../controllers/mascotas.controller.js';
 import {
   validateRegistroMascota,
@@ -22,5 +23,6 @@ mascotaRoutes.put('/actualizar/:id_mascota', upload.single('img'), uploadImage, 
 mascotaRoutes.delete('/eliminar/:id_mascota', eliminarMascota); 
 mascotaRoutes.get('/buscar/:id', buscarMascota);
 mascotaRoutes.post('/iniciar/:id_mascota', iniciarAdopcion);
+mascotaRoutes.post('/administrar/:id_mascota', administrarAdopcion);
 
 export default mascotaRoutes;
