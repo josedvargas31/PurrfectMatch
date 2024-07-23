@@ -21,6 +21,46 @@ export const listarMascotas = async (req, res) => {
 		});
 	}
 };
+// cambio de estado de la mascota a en proceso
+export const iniciarAdopcion = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { id_mascota } = req.params;
+
+        // Verificar si la mascota existe
+        const [mascota] = await pool.query("SELECT * FROM mascotas WHERE id_mascota = ?", [id_mascota]);
+
+        if (mascota.length > 0) {
+            // Cambiar el estado a "proceso adopcion"
+            const [result] = await pool.query("UPDATE mascotas SET estado = 'proceso adopcion' WHERE id_mascota = ?", [id_mascota]);
+            if (result.affectedRows > 0) {
+                res.status(200).json({
+                    status: 200,
+                    message: 'Estado de la mascota cambiado a proceso adopcion'
+                });
+            } else {
+                res.status(404).json({
+                    status: 404,
+                    message: 'No se pudo actualizar el estado de la mascota'
+                });
+            }
+        } else {
+            res.status(404).json({
+                status: 404,
+                message: 'No se encontró la mascota'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: 'Error en el sistema: ' + error.message
+        });
+    }
+};
 // Registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {
