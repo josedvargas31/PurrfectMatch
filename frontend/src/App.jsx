@@ -9,6 +9,8 @@ import DashboardAdmi from './components/pages/DashboardAdmi';
 import DashboardUser from './components/pages/DashboardUser';
 import { Mascotas } from "./components/pages/Mascota";
 import GlobalProvider from "./context/GlobalContext";
+import { Usuarios } from "./components/pages/Usuarios";
+import { ListsMascotas } from "./components/pages/ListsMascotas";
 
 
 function App() {
@@ -23,17 +25,19 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/iniciosesion" element={<IniciarSesion />} />
             <Route path="/registro" element={<RegistroUser />} />
-           
+
 
             {user && user.rol === 'administrador' && (
               <>
+                <Route path="/mascotas" element={<Mascotas />} />
                 <Route path="/inicioadmi" element={<DashboardAdmi />} />
+                <Route path="/usuarios" element={<Usuarios />} />
               </>
             )}
             {user && user.rol === 'usuario' && (
               <>
                 <Route path="/iniciouser" element={<DashboardUser />} />
-                <Route path="/mascotas" element={<Mascotas />} />
+                <Route path="/listmascotas" element={<ListsMascotas />} />
               </>
             )}
           </Routes >

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
 import MascotasContext from '../../context/MascotasContext.jsx';
@@ -12,17 +12,13 @@ import {
     Chip
 } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
-import { PlusIcon } from "../nextUI/PlusIcon.jsx";
 import { SearchIcon } from "../nextUI/SearchIcon.jsx";
 import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
-import MascotaModal from '../templates/MascotaModal.jsx';
+import ListMascotaModal from '../templates/ListsMascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
-import ButtonDesactivar from "../atomos/ButtonDesactivar.jsx";
-import ButtonActualizar from "../atomos/ButtonActualizar.jsx";
 
-export function Mascotas() {
-
+export function ListsMascotas() {
 
     const statusColorMap = {
         adoptar: "success",
@@ -38,7 +34,7 @@ export function Mascotas() {
         { name: "Adoptada", uid: "adoptada" },
     ];
 
-    function Ejemplo({ mascotas }) {
+    function Ejemplo() {
         const [filterValue, setFilterValue] = useState("");
         const [selectedKeys, setSelectedKeys] = useState(new Set(["todos"]));
         const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -86,34 +82,31 @@ export function Mascotas() {
 
         const renderCard = useCallback((mascota) => {
             return (
-                <Card className="py-2 " key={mascota.id_mascota}>
+                <Card className="p-4 m-4 shadow-lg">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                        <h4 className="font-bold text-large">{mascota.nombre}</h4>
-                        <small className="text-default-500">{mascota.genero}</small>
-                        <h4 className="font-bold text-large">{mascota.raza}</h4>
-                        <Chip className="capitalize" color={statusColorMap[mascota.estado]} size="xs" variant="flat">
+                        <h4 className="font-bold text-xl mb-1">{mascota.nombre}</h4>
+                        <small className="text-default-500 mb-2">{mascota.genero}</small>
+                        <h4 className="font-bold text-lg mb-2">{mascota.raza}</h4>
+                        <Chip className="capitalize" color={statusColorMap[mascota.estado]} size="sm" variant="flat">
                             {mascota.estado}
                         </Chip>
                     </CardHeader>
-                    <CardBody className="overflow-visible py-2">
-                        <Image
-                            alt="Card background"
-                            className="object-cover rounded-xl"
-                            src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                            width={270}
-                            height={200}
-                        />
-                          <p className="text-tiny uppercase font-bold">{mascota.descripcion}</p>
-                        <div className="mt-2 flex justify-start gap-2">
-                            <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
-                            <ButtonDesactivar
-                                onClick={() => peticionDesactivar(mascota.id_mascota)}
-                                estado={mascota.estado}
+                    <CardBody className="py-4">
+                        <div className="relative w-full h-52 mb-4 overflow-hidden">
+                            <Image
+                                alt="Card background"
+                                className="object-cover w-full h-full"
+                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                               /*  layout="fill" */
+                                /* objectFit="cover" */
                             />
                         </div>
-                        <Link className='mb-2' to='/' >
-                            <h1>Hola</h1>
-                        </Link>
+                        <p className="text-tiny uppercase font-bold mb-4">{mascota.descripcion}</p>
+                        <div className="flex justify-start gap-2">
+                            <Link className='text-blue-500 underline' to='#' onClick={() => handleToggle('view', mascota)}>
+                                Ver más
+                            </Link>
+                        </div>
                     </CardBody>
                 </Card>
             );
@@ -121,7 +114,7 @@ export function Mascotas() {
 
         return (
             <div className="flex flex-col items-center p-4 w-full">
-                <div className="w-full sm:w-full lg:w-11/12 xl:w-11/12">
+                <div className="w-full sm:w-full lg:w-12/12 xl:w-11/12">
                     <div className="flex flex-col mt-3">
                         <div className="flex justify-between gap-3 items-end">
                             <Input
@@ -159,27 +152,9 @@ export function Mascotas() {
                                         ))}
                                     </DropdownMenu>
                                 </Dropdown>
-                                <Button color="warning" className="z-1 text-white" style={{ position: 'relative' }} endContent={<PlusIcon />} onClick={() => handleToggle('create')}>
-                                    Registrar
-                                </Button>
                             </div>
                         </div>
-                       {/*  <div className="flex items-center justify-between mt-4">
-                            <span className="text-default-400 text-small">Total {filteredItems.length} Resultados</span>
-                            <label className="flex items-center text-default-400 text-small">
-                                Columnas por página:
-                                <select
-                                    className="bg-transparent outline-none text-default-400 text-small"
-                                    onChange={onRowsPerPageChange}
-                                >
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
-                            </label>
-                        </div> */}
-                        <div className="grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        <div className="grid gap-4 mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xxl:grid-cols-4">
                             {filteredItems.map(renderCard)}
                         </div>
                     </div>
@@ -190,7 +165,7 @@ export function Mascotas() {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalAcciones, setModalAcciones] = useState(false);
-    const [mode, setMode] = useState('create');
+    const [mode, setMode] = useState('view');
     const [initialData, setInitialData] = useState(null);
     const [mascotas, setMascotas] = useState([]);
     const [mensaje, setMensaje] = useState('')
@@ -210,86 +185,39 @@ export function Mascotas() {
             console.log('Error en el servidor ' + error);
         }
     };
-    // registrar y actualizar mascota
-    const handleSubmit = async (formData, e) => {
-        console.log('Datos enviados:', formData);
-        e.preventDefault()
-
-        try {
-
-            if (mode === 'create') {
-                await axiosClient.post('/mascota/registrar', formData).then((response) => {
-                    console.log('API Response:', response);
-                    if (response.status == 200) {
-                        Swal.fire({
-                            position: "center", // Posición centrada
-                            icon: "success",
-                            title: "Mascota registrado con éxito",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        peticionGet()
-                    } else {
-                        alert('Error en el registro')
-                    }
-                })
-            } else if (mode === 'update') {
-
-                await axiosClient.put(`/mascota/actualizar/${idMascota.id_mascota}`, formData).then((response) => {
-                    console.log(response);
-                    if (response.status === 200) {
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "Se actualizó con éxito la mascota",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        peticionGet()
-                    } else {
-                        alert('Error al actualizar')
-                    }
-                })
-            }
-            setModalOpen(false)
-
-        } catch (error) {
-            console.log('Error en el servidor ', error)
-            alert('Error en el servidor')
-        }
-    }
-
 
     const handleToggle = (mode, initialData) => {
         setInitialData(initialData)
         setModalOpen(true)
         setMode(mode)
     }
-    /*  */
 
+    const handleModalClose = async () => {
+        setModalOpen(false);
+        peticionGet();  // Actualiza los datos de las mascotas después de cerrar el modal
+    };
 
     return (
         <>
-         <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
-            <AccionesModal
-                isOpen={modalAcciones}
-                onClose={() => setModalAcciones(false)}
-                label={mensaje}
-            />
-            <MascotaModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                title={mode === 'create' ? 'Registrar mascotas' : 'Actualizar mascotas'}
-                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
-                initialData={initialData}
-                handleSubmit={handleSubmit}
-                mode={mode}
-            />
-            <Ejemplo
-                mascotas={mascotas}
-            />
-        </div>
-    </>
-    
+            <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
+                <AccionesModal
+                    isOpen={modalAcciones}
+                    onClose={() => handleModalClose(false)}
+                    label={mensaje}
+                />
+                <ListMascotaModal
+                    open={modalOpen}
+                    onClose={handleModalClose}  // Utiliza la nueva función de cierre
+                    title='Mascota'
+                    actionLabel='Cerrar'
+                    initialData={initialData}
+                    handleSubmit={handleModalClose}  // Utiliza la nueva función de cierre
+                    mode={mode}
+                />
+                <Ejemplo
+                    mascotas={mascotas}
+                />
+            </div>
+        </>
     );
 }

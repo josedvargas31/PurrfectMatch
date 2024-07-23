@@ -1,6 +1,7 @@
 import React, { createContext } from 'react'
 import { MascotasProvider } from './MascotasContext'
 import { VacunasProvider } from './VacunasContext'
+import { UsuariosProvider } from './UsuariosContext'
 
 // import { AuthProvider } from './authContext.jsx'
 
@@ -15,7 +16,9 @@ const GlobalProvider = ({ children }) => {
         <GlobalContext.Provider value={globalContextValue}>
             <MascotasProvider>
                 <VacunasProvider>
-                    {children}
+                    <UsuariosProvider>
+                        {children}
+                    </UsuariosProvider>
                 </VacunasProvider>
             </MascotasProvider>
         </GlobalContext.Provider>
