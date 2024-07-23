@@ -36,31 +36,38 @@ function RegistroUser() {
             [e.target.name]: e.target.value
         })
     }
-    //handleSubmit envía los datos del formulario a la API 
-    const hangleSubmit = async (e) => {
+
+    // handleSubmit envía los datos del formulario a la API 
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axiosClient.post('/registrarUsuario', formData).then((response) => {
-                console.log('Datos del regsitro del usuario ', response);
+            await axiosClient.post('/usuario/registrar', formData).then((response) => {
+                console.log('Datos del registro del usuario ', response);
                 Swal.fire({
                     position: "top-center",
                     icon: 'success',
-                    title: 'Usuario registrado con exito',
+                    title: 'Usuario registrado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate('iniciosesion');
-
-            }
-            )
+                navigate('/iniciosesion');
+            });
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
+            Swal.fire({
+                position: "top-center",
+                icon: 'error',
+                title: 'Error al registrar usuario',
+                text: 'Por favor, intente nuevamente.',
+                showConfirmButton: true
+            });
         }
     }
-    // const para ver el esatdo dinamico del eye del password
-    const [isVisible, setIsVisible] = React.useState(false);
 
-    // /toggleVisibility alterna la visibilidad de la contraseña entre texto y puntos.
+    // const para ver el estado dinámico del ojo del password
+    const [isVisible, setIsVisible] = useState(false);
+
+    // toggleVisibility alterna la visibilidad de la contraseña entre texto y puntos.
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     // color de los inputs
@@ -77,7 +84,7 @@ function RegistroUser() {
                             <Icon icon={iconos.iconoVolver} className='w-6 h-6' />
                         </Link>
                         <span className="mb-2 text-4xl font-bold text-center">Registro</span>
-                        <form onSubmit={hangleSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <div className="py-2">
                                 {colors.map((color) => (
                                     <Input
@@ -189,13 +196,13 @@ function RegistroUser() {
                                     <Select
                                         color={color}
                                         key={color}
-                                        label='usuario'
+                                        label='Rol'
                                         className='max-w-xs'
                                         isDisabled
                                     />
                                 ))}
                             </div>
-                            <Button color="warning" className='mt-4 w-full text-white p-2 '>
+                            <Button type="submit" color="warning" className='mt-4 w-full text-white p-2 '>
                                 Registrar
                             </Button>
                         </form>
