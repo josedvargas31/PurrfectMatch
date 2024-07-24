@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from "@nextui-org/link";
 import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
 import MascotasContext from '../../context/MascotasContext.jsx';
@@ -17,6 +17,7 @@ import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import ListMascotaModal from '../templates/ListsMascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
+import { Tooltip } from "@nextui-org/react";
 
 export function ListsMascotas() {
 
@@ -97,8 +98,8 @@ export function ListsMascotas() {
                                 alt="Card background"
                                 className="object-cover w-full h-full"
                                 src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                               /*  layout="fill" */
-                                /* objectFit="cover" */
+                            /*  layout="fill" */
+                            /* objectFit="cover" */
                             />
                         </div>
                         <p className="text-tiny uppercase font-bold mb-4">{mascota.descripcion}</p>
@@ -199,6 +200,15 @@ export function ListsMascotas() {
 
     return (
         <>
+            <div className="flex flex-col items-center p-4 w-full">
+                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md">
+                    <h1 className="text-3xl font-semibold">Perrfect Match</h1>
+                    <nav className="flex-grow flex justify-center space-x-24">
+                        <Link  color="warning" className="mx-2 text-lg cursor-pointer">Listas de mascotas</Link>
+                    </nav>
+                    <Link href="/perfil" color="warning" className="mx-2 text-lg cursor-pointer">Perfil</Link>
+                </header>
+            </div>
             <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
                 <AccionesModal
                     isOpen={modalAcciones}

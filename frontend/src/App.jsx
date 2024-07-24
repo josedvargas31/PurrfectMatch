@@ -9,9 +9,9 @@ import DashboardAdmi from './components/pages/DashboardAdmi';
 import DashboardUser from './components/pages/DashboardUser';
 import { Mascotas } from "./components/pages/Mascota";
 import GlobalProvider from "./context/GlobalContext";
-import { Usuarios } from "./components/pages/Usuarios";
 import { ListsMascotas } from "./components/pages/ListsMascotas";
 import { Notificaciones } from "./components/pages/Notificaciones";
+import PerfilUsuario from "./components/pages/Perfil";
 
 // import { Notificaciones } from "./components/pages/notificaciones";
 
@@ -36,7 +36,6 @@ function App() {
               <>
                 <Route path="/mascotas" element={<Mascotas />} />
                 <Route path="/inicioadmi" element={<DashboardAdmi />} />
-                <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/notificaciones" element={<Notificaciones />} />
               </>
             )}
@@ -44,6 +43,7 @@ function App() {
               <>
                 <Route path="/iniciouser" element={<DashboardUser />} />
                 <Route path="/listmascotas" element={<ListsMascotas />} />
+                <Route path="/perfil" element={<PerfilUsuario />} />
               </>
             )}
           </Routes >
@@ -53,4 +53,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

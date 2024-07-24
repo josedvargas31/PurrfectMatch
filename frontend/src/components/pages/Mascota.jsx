@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 import axiosClient from '../axiosClient.js';
 import MascotasContext from '../../context/MascotasContext.jsx';
 import {
@@ -10,19 +11,21 @@ import {
     DropdownItem,
     Chip
 } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
 import { PlusIcon } from "../nextUI/PlusIcon.jsx";
 import { SearchIcon } from "../nextUI/SearchIcon.jsx";
 import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
 import { Card, CardHeader, CardBody, Image, Link } from "@nextui-org/react";
+import iconos from '../../styles/iconos';
+import Icon from '../atomos/IconVolver';
 import MascotaModal from '../templates/MascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
-import ButtonDesactivar from "../atomos/ButtonDesactivar.jsx";
 import ButtonActualizar from "../atomos/ButtonActualizar.jsx";
+import VacunaModal from '../templates/VacunaModal.jsx';
 
 export function Mascotas() {
-
-
+    const navigate = useNavigate();
     const statusColorMap = {
         adoptar: "success",
         adoptada: "default",
@@ -105,14 +108,7 @@ export function Mascotas() {
                         <p className="text-tiny uppercase font-bold">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
                             <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
-                            <ButtonDesactivar
-                                onClick={() => peticionDesactivar(mascota.id_mascota)}
-                                estado={mascota.estado}
-                            />
                         </div>
-                        <Link className='mb-2' to='/' >
-                            <h1>Hola</h1>
-                        </Link>
                     </CardBody>
                 </Card>
             );
@@ -158,26 +154,14 @@ export function Mascotas() {
                                         ))}
                                     </DropdownMenu>
                                 </Dropdown>
-                                <Button color="warning" className="z-1 text-white" style={{ position: 'relative' }} endContent={<PlusIcon />} onClick={() => handleToggle('create')}>
+                                <Button color="warning" variant="bordered" className="z-1 text-orange-500" style={{ position: 'relative' }} endContent={<PlusIcon />} onClick={() => handleToggle('create')}>
                                     Registrar
+                                </Button>
+                                <Button color="default" variant="ghost" className="z-1 text-black" style={{ position: 'relative' }} endContent={<PlusIcon />} onClick={() => handleToggleVacuna('create')}>
+                                    Registrar Vacuna
                                 </Button>
                             </div>
                         </div>
-                        {/*  <div className="flex items-center justify-between mt-4">
-                            <span className="text-default-400 text-small">Total {filteredItems.length} Resultados</span>
-                            <label className="flex items-center text-default-400 text-small">
-                                Columnas por página:
-                                <select
-                                    className="bg-transparent outline-none text-default-400 text-small"
-                                    onChange={onRowsPerPageChange}
-                                >
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
-                            </label>
-                        </div> */}
                         <div className="grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {filteredItems.map(renderCard)}
                         </div>
@@ -189,6 +173,7 @@ export function Mascotas() {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalAcciones, setModalAcciones] = useState(false);
+    const [modalVacunaOpen, setModalVacunaOpen] = useState(false);
     const [mode, setMode] = useState('create');
     const [initialData, setInitialData] = useState(null);
     const [mascotas, setMascotas] = useState([]);
@@ -209,96 +194,170 @@ export function Mascotas() {
             console.log('Error en el servidor ' + error);
         }
     };
-    // registrar y actualizar mascota
+
     const handleSubmit = async (formData, e) => {
         console.log('Datos enviados:', formData);
-        e.preventDefault()
+        e.preventDefault();
 
         try {
-
             if (mode === 'create') {
                 await axiosClient.post('/mascota/registrar', formData).then((response) => {
                     console.log('API Response:', response);
-                    if (response.status == 200) {
+                    if (response.status === 200) {
                         Swal.fire({
                             position: "center", // Posición centrada
                             icon: "success",
-                            title: "Mascota registrado con éxito",
+                            title: "Mascota registrada con éxito",
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        peticionGet()
+                        peticionGet();
                     } else {
-                        alert('Error en el registro')
+                        alert('Error en el registro');
                     }
-                })
+                });
             } else if (mode === 'update') {
-
                 await axiosClient.put(`/mascota/actualizar/${idMascota.id_mascota}`, formData).then((response) => {
-                    console.log(response);
+                    console.log('API Response:', response);
                     if (response.status === 200) {
                         Swal.fire({
-                            position: "center",
+                            position: "center", // Posición centrada
                             icon: "success",
-                            title: "Se actualizó con éxito la mascota",
+                            title: "Mascota actualizada con éxito",
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        peticionGet()
+                        peticionGet();
                     } else {
-                        alert('Error al actualizar')
+                        alert('Error en la actualización');
                     }
-                })
+                });
             }
-            setModalOpen(false)
-
         } catch (error) {
-            console.log('Error en el servidor ', error)
-            alert('Error en el servidor')
+            console.log(error);
         }
-    }
 
+        handleToggle();
+    };
 
-    const handleToggle = (mode, initialData) => {
-        setInitialData(initialData)
-        setModalOpen(true)
-        setMode(mode)
-    }
-    /*  */
+    const handleSubmitVacuna = async (formData, e) => {
+        console.log('Datos enviados:', formData);
+        e.preventDefault();
 
+        try {
+            await axiosClient.post('/vacuna/registrar', formData).then((response) => {
+                console.log('API Response:', response);
+                if (response.status === 200) {
+                    Swal.fire({
+                        position: "center", // Posición centrada
+                        icon: "success",
+                        title: "Vacuna registrada con éxito",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    peticionGet();
+                } else {
+                    alert('Error en el registro');
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        handleToggleVacuna();
+    };
+
+    const handleToggle = (modalMode = 'create', data = null) => {
+        setMode(modalMode);
+        setInitialData(data);
+        setModalOpen(!modalOpen);
+    };
+
+    const handleToggleAcciones = (modalMode = 'create', data = null) => {
+        setMode(modalMode);
+        setInitialData(data);
+        setModalAcciones(!modalAcciones);
+    };
+
+    const handleToggleVacuna = (modalMode = 'create', data = null) => {
+        setMode(modalMode);
+        setInitialData(data);
+        setModalVacunaOpen(!modalVacunaOpen);
+    };
+    const logout = () => {
+        localStorage.clear();
+        navigate('/');
+    };
 
     return (
         <>
-            <div className="flex flex-col items-center p-4 w-full">
+            <div className="flex flex-col items-center p-8 w-full">
                 <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md">
-                    <h1 className="text-3xl font-semibold">Perrfect Match</h1>
+                    <h1 className="text-3xl font-semibold text-orange-300">Perrfect Match</h1>
                     <nav className="flex-grow flex justify-center space-x-24">
                         <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>
                         <Link href="/notificaciones" color="warning" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
                     </nav>
-                    {/*   <span className="hover:text-[#c5296c] text-[#FA67A7] cursor-pointer">Notificaciones</span> */}
+                    <Tooltip content="Salir">
+                        <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
+                            const swalWithBootstrapButtons = Swal.mixin({
+                                customClass: {
+                                    confirmButton: "btn btn-success",
+                                    cancelButton: "btn btn-danger",
+                                    actions: "gap-5"
+                                },
+                                buttonsStyling: false
+                            });
+
+                            swalWithBootstrapButtons.fire({
+                                title: "¿Estás Seguro que deseas Cerrar Sesión?",
+                                text: "",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "Salir",
+                                cancelButtonText: "Cancelar",
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    logout();
+                                }
+                            });
+                        }}>
+                            <Icon className="w-5 h-5" icon={iconos.iconoSalir} />
+                        </div>
+                    </Tooltip>
                 </header>
             </div>
-            <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'>
-                <AccionesModal
-                    isOpen={modalAcciones}
-                    onClose={() => setModalAcciones(false)}
-                    label={mensaje}
-                />
-                <MascotaModal
-                    open={modalOpen}
-                    onClose={() => setModalOpen(false)}
-                    title={mode === 'create' ? 'Registrar mascotas' : 'Actualizar mascotas'}
-                    actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
-                    initialData={initialData}
-                    handleSubmit={handleSubmit}
-                    mode={mode}
-                />
-                <Ejemplo
-                    mascotas={mascotas}
-                />
-            </div>
+            <Ejemplo mascotas={mascotas} />
+            <MascotaModal
+                open={modalOpen}
+                onClose={handleToggle}
+                handleSubmit={handleSubmit}
+                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
+                title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
+                initialData={initialData}
+                mode={mode}
+            />
+            <AccionesModal
+                open={modalAcciones}
+                onClose={handleToggleAcciones}
+                handleSubmit={handleSubmit}
+                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
+                title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
+                initialData={initialData}
+                mode={mode}
+            />
+            <VacunaModal
+                open={modalVacunaOpen}
+                onClose={handleToggleVacuna}
+                handleSubmit={handleSubmitVacuna}
+                actionLabel={'Registrar Vacuna'}
+                title={'Registrar Vacuna'}
+                initialData={initialData}
+                mode={mode}
+            />
         </>
-
     );
 }
+
+export default Mascotas;

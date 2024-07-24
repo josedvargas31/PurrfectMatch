@@ -1,18 +1,8 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-/* import { Link } from 'react-router-dom'; */
 import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
-import MascotasContext from '../../context/MascotasContext.jsx';
-import {
-    Input,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Chip
-} from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
-import { Card, CardHeader, CardBody, Image, Link} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Link, Chip} from "@nextui-org/react";
 
 export function Notificaciones() {
     const statusColorMap = {
@@ -83,10 +73,10 @@ export function Notificaciones() {
                     <div className="flex justify-start gap-2">
                         {!isAdoptada && (
                             <>
-                                <Button color="success" onClick={() => handleAdoptar(mascota.id_mascota)}>
+                                <Button color="warning" onClick={() => handleAdoptar(mascota.id_mascota)}>
                                     Aceptar
                                 </Button>
-                                <Button color="error" onClick={() => handleDenegar(mascota.id_mascota)}>
+                                <Button color="danger" onClick={() => handleDenegar(mascota.id_mascota)}>
                                     Rechazar
                                 </Button>
                             </>
