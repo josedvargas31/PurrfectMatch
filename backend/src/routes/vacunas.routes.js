@@ -15,8 +15,7 @@ const vacunaRoutes = Router();
 
 vacunaRoutes.get("/listar", listarVacunas);
 vacunaRoutes.post("/registrar", validateRegistroVacuna, registrarVacuna);
-vacunaRoutes.put(
-	"/actualizar/:id_vacuna",
+vacunaRoutes.put("/actualizar/:id_vacuna",
 	validateActualizarVacuna,
 	actualizarVacuna
 );
