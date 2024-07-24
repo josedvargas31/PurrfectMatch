@@ -61,9 +61,9 @@ function IniciarSesion() {
 
                 const userRol = user[0]?.rol;
                 if (userRol === 'usuario') {
-                    navigate('/iniciouser');
+                    navigate('/listmascotas');
                 } else if (userRol === 'administrador') {
-                    navigate('/inicioadmi');
+                    navigate('/mascotas');
                 }
             } else {
                 console.log('Response', response);
