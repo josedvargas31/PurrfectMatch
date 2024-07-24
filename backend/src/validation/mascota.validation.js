@@ -55,15 +55,8 @@ export const validateRegistroMascota = [
 	)
 		.not()
 		.isEmpty()
-		.isIn(["adoptar", "adoptada", "proceso adopcion"]),
+		.isIn(["adoptar", "adoptada", "proceso adopcion"])
 
-	check(
-		"fk_id_usuario",
-		"El ID del usuario es obligatorio y debe ser un número entero"
-	)
-		.not()
-		.isEmpty()
-		.isInt(),
 ];
 
 // validacion de actualizar de mascota

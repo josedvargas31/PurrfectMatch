@@ -1,6 +1,7 @@
 import { pool } from "../database/conexion.js";
 import fs from "fs";
 import path from "path";
+import { validationResult } from 'express-validator';
 
 // listar mascotas
 export const listarMascotas = async (req, res) => {
@@ -61,6 +62,7 @@ export const iniciarAdopcion = async (req, res) => {
         });
     }
 };
+
 // cambio de estado a adoptado a adaptar
 export const administrarAdopcion = async (req, res) => {
     try {
@@ -123,6 +125,7 @@ export const administrarAdopcion = async (req, res) => {
         });
     }
 };
+
 // Registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {
