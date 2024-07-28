@@ -4,10 +4,13 @@ import { Button } from "@nextui-org/button";
 import { CameraIcon } from '../nextUI/CameraIcon.jsx';
 import MascotasContext from '../../context/MascotasContext.jsx';
 
+
 const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
     const [genero, setGenero] = useState([]);
+    const [especie, setEspecie] = useState([]);
     const [nombre, setNombre] = useState('');
     const [generoOp, setGeneroOp] = useState('');
+    const [especieOp, setEspecieOp] = useState('');
     const [raza, setRaza] = useState('');
     const [edad, setEdad] = useState('');
     const [descripcion, setDescripcion] = useState('');
@@ -19,17 +22,33 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
     const { idMascota } = useContext(MascotasContext);
 
     useEffect(() => {
-        const enumData = [
+        const enumDataGenero = [
             { value: 'Macho', label: 'Macho' },
             { value: 'Hembra', label: 'Hembra' },
         ];
-        setGenero(enumData);
+        setGenero(enumDataGenero);
+    }, []);
+
+    useEffect(() => {
+        const enumDataEspecie = [
+            { value: 'Perro', label: 'Perro' },
+            { value: 'Gato', label: 'Gato' },
+            { value: 'Oveja', label: 'Oveja' },
+            { value: 'Pato', label: 'Pato' },
+            { value: 'Cerdo', label: 'Cerdo' },
+            { value: 'Pajaro', label: 'Pajaro' },
+            { value: 'Hamster', label: 'Hamster' },
+            { value: 'Caballo', label: 'Caballo' },
+            { value: 'Vaca', label: 'Vaca' },
+        ];
+        setEspecie(enumDataEspecie);
     }, []);
 
     useEffect(() => {
         if (mode === 'update' && idMascota) {
             setNombre(idMascota.nombre || '');
             setGeneroOp(idMascota.genero || '');
+            setEspecieOp(idMascota.especie || '');
             setRaza(idMascota.raza || '');
             setEdad(idMascota.edad || '');
             setDescripcion(idMascota.descripcion || '');
@@ -39,6 +58,7 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
         } else {
             setNombre('');
             setGeneroOp('');
+            setEspecieOp('');
             setRaza('');
             setEdad('');
             setDescripcion('');
@@ -50,14 +70,23 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user')); // Obtener el usuario del localStorage
+        const fk_id_usuario = user ? user.id_usuario : null; // Obtener el id_usuario del usuario
+
+        if (!fk_id_usuario) {
+            console.error('Usuario no encontrado en localStorage');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('nombre', nombre);
         formData.append('genero', generoOp);
+        formData.append('especie', especieOp);
         formData.append('raza', raza);
         formData.append('edad', edad);
         formData.append('descripcion', descripcion);
         formData.append('estado', estado);
-        formData.append('fk_id_usuario', idMascota.fk_id_usuario);
+        formData.append('fk_id_usuario', fk_id_usuario); // Añadir fk_id_usuario al formData
         if (foto) {
             formData.append('img', foto);
         }
@@ -133,6 +162,24 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
                             Seleccionar Genero
                         </option>
                         {genero.map((item) => (
+                            <option key={item.value} value={item.value}>
+                                {item.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="py-2">
+                    <select
+                        className="pl-2 pr-4 py-2 w-11/12 h-14 text-sm border-2 rounded-xl border-gray-200 hover:border-gray-400 shadow-sm text-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
+                        name="especie"
+                        value={especieOp}
+                        onChange={(e) => setEspecieOp(e.target.value)}
+                        required
+                    >
+                        <option value="" hidden className="text-gray-600">
+                            Seleccionar Especie
+                        </option>
+                        {especie.map((item) => (
                             <option key={item.value} value={item.value}>
                                 {item.label}
                             </option>

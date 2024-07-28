@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
 import { Button } from "@nextui-org/button";
-import { Card, CardHeader, CardBody, Image, Link, Chip } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Link, Chip, Skeleton } from "@nextui-org/react";
 
 export function Notificaciones() {
     const statusColorMap = {
@@ -13,6 +13,14 @@ export function Notificaciones() {
     };
 
     const [mascotas, setMascotas] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        // Simulate fetching data with a delay
+        setTimeout(() => {
+            setIsLoaded(true);
+        }, 1500);
+    }, []);
 
     useEffect(() => {
         peticionGet();
@@ -62,13 +70,15 @@ export function Notificaciones() {
                     </Chip>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2">
-                    <div className="relative w-full h-52 mb-4 overflow-hidden">
-                        <Image
-                            alt="Card background"
-                            className="object-cover rounded-xl w-full h-full"
-                            src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                        />
-                    </div>
+                    <Skeleton isLoaded={isLoaded} className="rounded-lg">
+                        <div className="relative w-full h-52 mb-4 overflow-hidden">
+                            <Image
+                                alt="Card background"
+                                className="object-cover rounded-xl w-full h-full"
+                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                            />
+                        </div>
+                    </Skeleton>
                     <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                     <div className="flex justify-start gap-2">
                         {!isAdoptada && (
@@ -85,7 +95,7 @@ export function Notificaciones() {
                 </CardBody>
             </Card>
         );
-    }, []);
+    }, [isLoaded]);
 
     return (
         <div className="flex flex-col items-center p-4 w-full">
