@@ -14,10 +14,10 @@ import {
 import { Button } from "@nextui-org/button";
 import { SearchIcon } from "../nextUI/SearchIcon.jsx";
 import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Skeleton } from "@nextui-org/react";
 import ListMascotaModal from '../templates/ListsMascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
-import { Tooltip } from "@nextui-org/react";
+
 
 export function ListsMascotas() {
 
@@ -40,6 +40,7 @@ export function ListsMascotas() {
         const [selectedKeys, setSelectedKeys] = useState(new Set(["todos"]));
         const [rowsPerPage, setRowsPerPage] = useState(5);
         const [page, setPage] = useState(1);
+        const [isLoaded, setIsLoaded] = useState(false);
 
         const statusFilter = useMemo(() => {
             return Array.from(selectedKeys).join(", ");
@@ -68,6 +69,13 @@ export function ListsMascotas() {
             return filteredMascotas;
         }, [mascotas, filterValue, statusFilter]);
 
+        useEffect(() => {
+            // Simulate fetching data with a delay
+            setTimeout(() => {
+                setIsLoaded(true);
+            }, 1500);
+        }, []);
+
         const onSearchChange = (e) => {
             setFilterValue(e.target.value);
         };
@@ -84,6 +92,7 @@ export function ListsMascotas() {
         const renderCard = useCallback((mascota) => {
             return (
                 <Card className="p-2">
+
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                         <h4 className="font-bold text-2xl mb-1 text-gray-800">Nombre: {mascota.nombre}</h4>
                         <small className="text-gray-600 mb-2">Género: {mascota.genero}</small>
@@ -93,15 +102,17 @@ export function ListsMascotas() {
                         </Chip>
                     </CardHeader>
                     <CardBody className="overflow-visible py-4">
-                    <div className="relative w-full h-52 mb-4 overflow-hidden">
-                            <Image
-                                alt="Card background"
-                                className="object-cover rounded-xl w-full h-full"
-                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                                width={270}
-                                height={200}
-                            />
-                        </div>
+                        <Skeleton isLoaded={isLoaded} className="rounded-lg">
+                            <div className="relative w-full h-52 mb-4 overflow-hidden">
+                                <Image
+                                    alt="Card background"
+                                    className="object-cover rounded-xl w-full h-full"
+                                    src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                                    width={270}
+                                    height={200}
+                                />
+                            </div>
+                        </Skeleton>
                         <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="flex justify-start gap-2">
                             <Link className='text-blue-600 underline cursor-pointer font-semibold' to='#' onClick={() => handleToggle('view', mascota)}>
@@ -111,7 +122,7 @@ export function ListsMascotas() {
                     </CardBody>
                 </Card>
             );
-        }, []);
+        }, [isLoaded]);
 
         return (
             <div className="flex flex-col items-center p-4 w-full">
@@ -209,25 +220,25 @@ export function ListsMascotas() {
                     <Link href="/perfil" color="warning" className="mx-2 text-lg cursor-pointer">Perfil</Link>
                 </header>
             </div>
-           {/*  <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'> */}
-                <AccionesModal
-                    isOpen={modalAcciones}
-                    onClose={() => handleModalClose(false)}
-                    label={mensaje}
-                />
-                <ListMascotaModal
-                    open={modalOpen}
-                    onClose={handleModalClose}  // Utiliza la nueva función de cierre
-                    title='Mascota'
-                    actionLabel='Cerrar'
-                    initialData={initialData}
-                    handleSubmit={handleModalClose}  // Utiliza la nueva función de cierre
-                    mode={mode}
-                />
-                <Ejemplo
-                    mascotas={mascotas}
-                />
-           {/*  </div> */}
+            {/*  <div className='w-full max-w-screen-xl mx-auto p-4 sm:p-11 xl:w-11/12 lg:p-8'> */}
+            <AccionesModal
+                isOpen={modalAcciones}
+                onClose={() => handleModalClose(false)}
+                label={mensaje}
+            />
+            <ListMascotaModal
+                open={modalOpen}
+                onClose={handleModalClose}  // Utiliza la nueva función de cierre
+                title='Mascota'
+                actionLabel='Cerrar'
+                initialData={initialData}
+                handleSubmit={handleModalClose}  // Utiliza la nueva función de cierre
+                mode={mode}
+            />
+            <Ejemplo
+                mascotas={mascotas}
+            />
+            {/*  </div> */}
         </>
     );
 }

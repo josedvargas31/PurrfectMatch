@@ -16,7 +16,7 @@ import { Button } from "@nextui-org/button";
 import { PlusIcon } from "../nextUI/PlusIcon.jsx";
 import { SearchIcon } from "../nextUI/SearchIcon.jsx";
 import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
-import { Card, CardHeader, CardBody, Image, Link } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Image, Link, Skeleton } from "@nextui-org/react";
 import iconos from '../../styles/iconos';
 import Icon from '../atomos/IconVolver';
 import MascotaModal from '../templates/MascotaModal.jsx';
@@ -45,6 +45,7 @@ export function Mascotas() {
         const [selectedKeys, setSelectedKeys] = useState(new Set(["todos"]));
         const [rowsPerPage, setRowsPerPage] = useState(5);
         const [page, setPage] = useState(1);
+        const [isLoaded, setIsLoaded] = useState(false);
 
         const statusFilter = useMemo(() => {
             return Array.from(selectedKeys).join(", ");
@@ -73,6 +74,12 @@ export function Mascotas() {
             return filteredMascotas;
         }, [mascotas, filterValue, statusFilter]);
 
+        useEffect(() => {
+            // Simulate fetching data with a delay
+            setTimeout(() => {
+                setIsLoaded(true);
+            }, 1500);
+        }, []);
         const onSearchChange = (e) => {
             setFilterValue(e.target.value);
         };
@@ -98,6 +105,7 @@ export function Mascotas() {
                         </Chip>
                     </CardHeader>
                     <CardBody className="overflow-visible py-4">
+                    <Skeleton isLoaded={isLoaded} className="rounded-lg">
                         <div className="relative w-full h-52 mb-4 overflow-hidden">
                             <Image
                                 alt="Card background"
@@ -107,6 +115,7 @@ export function Mascotas() {
                                 height={200}
                             />
                         </div>
+                        </Skeleton>
                         <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
                             <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
@@ -114,7 +123,7 @@ export function Mascotas() {
                     </CardBody>
                 </Card>
             );
-        }, []);
+        }, [isLoaded]);
 
         return (
             <div className="flex flex-col items-center p-4 w-full">
