@@ -65,6 +65,14 @@ function IniciarSesion() {
                 } else if (userRol === 'administrador') {
                     navigate('/mascotas');
                 }
+            } else if (response.status === 404 && response.data.message === "Usuario no autorizado") {
+                Swal.fire({
+                    position: "top-center",
+                    icon: "warning",
+                    title: "Usuario no registrado",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
                 console.log('Response', response);
                 Swal.fire({
@@ -77,7 +85,17 @@ function IniciarSesion() {
             }
         } catch (error) {
             console.log(error);
-            alert('Error del servidor' + error);
+            if (error.response && error.response.status === 404 && error.response.data.message === "Usuario no autorizado") {
+                Swal.fire({
+                    position: "top-center",
+                    icon: "warning",
+                    title: "Usuario no registrado",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                alert('Error del servidor: ' + error.message);
+            }
         }
     }
     // const para ver el esatdo dinamico del eye del password
@@ -115,9 +133,13 @@ function IniciarSesion() {
                                     name='correo'
                                     id='correo'
                                     ref={correo}
+                                    required={true}
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                    title="Ingrese un correo válido"
                                 />
                             ))}
                         </div>
+
                         <div className="py-2">
                             {colors.map((color) => (
                                 <Input
@@ -128,6 +150,8 @@ function IniciarSesion() {
                                     name='password'
                                     id='password'
                                     ref={password}
+                                    required={true}
+                                    title="La contraseña es obligatoria"
                                     endContent={
                                         <button type="button" onClick={toggleVisibility}>
                                             {isVisible ? (
@@ -142,7 +166,6 @@ function IniciarSesion() {
                                 />
                             ))}
                         </div>
-
                         {<a href="/ruta" className="text-gray-700 hover:text-gray-900 hover:underline flex justify-center mt-3" >Olvidó su contraseña?</a>}
                         <Button color="warning" className='mt-4 w-full text-white p-2 '
                             onClick={handleSubmit} >

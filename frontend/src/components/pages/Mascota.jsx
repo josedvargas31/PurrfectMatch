@@ -88,24 +88,26 @@ export function Mascotas() {
 
         const renderCard = useCallback((mascota) => {
             return (
-                <Card className="py-2 " key={mascota.id_mascota}>
+                <Card className="p-2 " key={mascota.id_mascota}>
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                        <h4 className="font-bold text-large">{mascota.nombre}</h4>
-                        <small className="text-default-500">{mascota.genero}</small>
-                        <h4 className="font-bold text-large">{mascota.raza}</h4>
-                        <Chip className="capitalize" color={statusColorMap[mascota.estado]} size="xs" variant="flat">
+                        <h4 className="font-bold text-2xl mb-1 text-gray-800">Nombre: {mascota.nombre}</h4>
+                        <small className="text-gray-600 mb-2">Género: {mascota.genero}</small>
+                        <h4 className="font-semibold text-lg mb-2 text-gray-700">Raza: {mascota.raza}</h4>
+                        <Chip className="capitalize" color={statusColorMap[mascota.estado]} size="sm" variant="flat">
                             {mascota.estado}
                         </Chip>
                     </CardHeader>
-                    <CardBody className="overflow-visible py-2">
-                        <Image
-                            alt="Card background"
-                            className="object-cover rounded-xl"
-                            src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                            width={270}
-                            height={200}
-                        />
-                        <p className="text-tiny uppercase font-bold">{mascota.descripcion}</p>
+                    <CardBody className="overflow-visible py-4">
+                        <div className="relative w-full h-52 mb-4 overflow-hidden">
+                            <Image
+                                alt="Card background"
+                                className="object-cover rounded-xl w-full h-full"
+                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                                width={270}
+                                height={200}
+                            />
+                        </div>
+                        <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
                             <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
                         </div>
@@ -128,7 +130,7 @@ export function Mascotas() {
                                 onClear={onClear}
                                 onChange={onSearchChange}
                             />
-                            <div className="flex gap-3">
+                            <div className="z-0 flex gap-3">
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button
@@ -162,7 +164,7 @@ export function Mascotas() {
                                 </Button>
                             </div>
                         </div>
-                        <div className="grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        <div className="z-0 grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {filteredItems.map(renderCard)}
                         </div>
                     </div>
@@ -292,7 +294,7 @@ export function Mascotas() {
     return (
         <>
             <div className="flex flex-col items-center p-8 w-full">
-                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md">
+                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md max-w-screen-xl flex-wrap mx-auto p-4">
                     <h1 className="text-3xl font-semibold text-orange-300">Perrfect Match</h1>
                     <nav className="flex-grow flex justify-center space-x-24">
                         <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>

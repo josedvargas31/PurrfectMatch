@@ -57,7 +57,7 @@ function RegistroUser() {
             Swal.fire({
                 position: "top-center",
                 icon: 'error',
-                title: 'Error al registrar usuario',
+                title: 'Error al registrar usuario, intente de nuevo',
                 text: 'Por favor, intente nuevamente.',
                 showConfirmButton: true
             });
@@ -196,7 +196,7 @@ function RegistroUser() {
                                     <Select
                                         color={color}
                                         key={color}
-                                        label='Rol'
+                                        label='Usuario'
                                         className='max-w-xs'
                                         isDisabled
                                     />
