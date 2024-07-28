@@ -8,9 +8,11 @@ import MascotasContext from '../../context/MascotasContext.jsx';
 const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
     const [genero, setGenero] = useState([]);
     const [especie, setEspecie] = useState([]);
+    const [esterilizacion, setEsterilizacion] = useState([]);
     const [nombre, setNombre] = useState('');
     const [generoOp, setGeneroOp] = useState('');
     const [especieOp, setEspecieOp] = useState('');
+    const [esterilizacionOp, setEsterilizacionOp] = useState('');
     const [raza, setRaza] = useState('');
     const [edad, setEdad] = useState('');
     const [descripcion, setDescripcion] = useState('');
@@ -27,6 +29,15 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
             { value: 'Hembra', label: 'Hembra' },
         ];
         setGenero(enumDataGenero);
+    }, []);
+
+    useEffect(() => {
+        const enumDataEsterilizacion = [
+            { value: 'si', label: 'Si' },
+            { value: 'no', label: 'No' },
+            { value: 'no se', label: 'No se' },
+        ];
+        setEsterilizacion(enumDataEsterilizacion);
     }, []);
 
     useEffect(() => {
@@ -51,6 +62,7 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
             setEspecieOp(idMascota.especie || '');
             setRaza(idMascota.raza || '');
             setEdad(idMascota.edad || '');
+            setEsterilizacionOp(idMascota.esterilizacion || '');
             setDescripcion(idMascota.descripcion || '');
             setEstado(idMascota.estado || 'adoptar');
             setFotoUrl(idMascota.img || ''); // Establecer la URL de la imagen actual
@@ -61,6 +73,7 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
             setEspecieOp('');
             setRaza('');
             setEdad('');
+            setEsterilizacionOp('');
             setDescripcion('');
             setEstado('adoptar');
             setFotoUrl(''); // Limpiar URL de imagen
@@ -84,6 +97,7 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
         formData.append('especie', especieOp);
         formData.append('raza', raza);
         formData.append('edad', edad);
+        formData.append('esterilizacion', esterilizacionOp);
         formData.append('descripcion', descripcion);
         formData.append('estado', estado);
         formData.append('fk_id_usuario', fk_id_usuario); // Añadir fk_id_usuario al formData
@@ -115,7 +129,7 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
                     <div className='flex flex-col items-center'>
                         <Avatar
                             showFallback
-                             className="w-24 h-24 cursor-pointer"
+                            className="w-24 h-24 cursor-pointer"
                             onClick={handleClick}
                             src={fotoUrl || 'https://images.unsplash.com/broken'}
                             fallback={
@@ -224,6 +238,24 @@ const FormMascotas = ({ mode, handleSubmit, onClose, actionLabel }) => {
                             title="La edad de la mascota debe ser un número entre 0 y 20"
                         />
                     ))}
+                </div>
+                <div className="py-2">
+                    <select
+                        className="pl-2 pr-4 py-2 w-11/12 h-14 text-sm border-2 rounded-xl border-gray-200 hover:border-gray-400 shadow-sm text-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
+                        name="esterilizacion"
+                        value={esterilizacionOp}
+                        onChange={(e) => setEsterilizacionOp(e.target.value)}
+                        required
+                    >
+                        <option value="" hidden className="text-gray-600">
+                            Seleccionar Esterelizacion
+                        </option>
+                        {esterilizacion.map((item) => (
+                            <option key={item.value} value={item.value}>
+                                {item.label}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className='py-2'>
                     {colors.map((color) => (
