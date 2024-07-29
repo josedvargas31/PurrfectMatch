@@ -7,6 +7,7 @@ import {
   buscarMascota,
   iniciarAdopcion,
   administrarAdopcion,
+  listarMascotasConUsuarios,
 } from '../controllers/mascotas.controller.js';
 import {
   validateRegistroMascota,
@@ -19,6 +20,7 @@ import { uploadImage, deleteImage } from '../controllers/imagenes.controller.js'
 const mascotaRoutes = Router();
 
 mascotaRoutes.get('/listar', listarMascotas);
+mascotaRoutes.get('/listarMU', listarMascotasConUsuarios);
 mascotaRoutes.post('/registrar', upload.single('img'), uploadImage, validateRegistroMascota, registrarMascota);
 mascotaRoutes.put('/actualizar/:id_mascota', upload.single('img'), uploadImage, validateActualizarMascota, actualizarMascota);
 mascotaRoutes.delete('/eliminar/:id_mascota', eliminarMascota); 

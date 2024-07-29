@@ -31,14 +31,6 @@ export const validateRegistroVacuna = [
 	)
 		.optional()
 		.isIn(["Completa", "Incompleta", "En proceso", "no se"]),
-
-	check(
-		"fk_id_usuario",
-		"El ID del usuario es obligatorio y debe ser un número entero"
-	)
-		.not()
-		.isEmpty()
-		.isInt(),
 ];
 
 export const validateActualizarVacuna = [

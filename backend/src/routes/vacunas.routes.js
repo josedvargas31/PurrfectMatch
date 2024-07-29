@@ -13,7 +13,7 @@ import {
 
 const vacunaRoutes = Router();
 
-vacunaRoutes.get("/listar", listarVacunas);
+vacunaRoutes.get("/listar/:id_mascota", listarVacunas);
 vacunaRoutes.post("/registrar", validateRegistroVacuna, registrarVacuna);
 vacunaRoutes.put("/actualizar/:id_vacuna",
 	validateActualizarVacuna,
