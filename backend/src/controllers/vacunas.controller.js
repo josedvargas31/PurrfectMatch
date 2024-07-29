@@ -2,8 +2,10 @@ import { pool } from "../database/conexion.js";
 import { validationResult } from "express-validator";
 // Listar vacunas
 export const listarVacunas = async (req, res) => {
+  const { id_mascota } = req.params;
   try {
-    const [result] = await pool.query("SELECT * FROM Vacunas");
+    const [result] = await pool.query("SELECT * FROM Vacunas WHERE fk_id_mascota = ?", [id_mascota]);
+    
     if (result.length > 0) {
       res.status(200).json({
         status: 200,
@@ -13,7 +15,7 @@ export const listarVacunas = async (req, res) => {
     } else {
       res.status(403).json({
         status: 403,
-        message: "No hay vacunas para listar",
+        message: "No hay vacunas para listar para esta mascota",
       });
     }
   } catch (error) {
@@ -23,6 +25,7 @@ export const listarVacunas = async (req, res) => {
     });
   }
 };
+
 
 // Registrar vacuna
 export const registrarVacuna = async (req, res) => {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 // controllers
-import { listarUsuarios, registrarUsuario, actualizarUsuario, eliminarUsuario, buscarUsuario, perfil, actualizarPerfil } from "../controllers/usuarios.controller.js";
+import { listarUsuarios, registrarUsuario, actualizarUsuario, eliminarUsuario, buscarUsuario, perfil, actualizarPerfil} from "../controllers/usuarios.controller.js";
 // validacion de datos
 import { validateRegistroUsuario, validateActualizarUsuario } from "../validation/usuarios.validation.js";
 // valida por token
@@ -10,7 +10,7 @@ const usuarioRoutes = Router();
 
 usuarioRoutes.get("/listar", validarToken, listarUsuarios);
 usuarioRoutes.get('/perfil', validarToken, perfil);
-usuarioRoutes.put('/perfilactualizar/:identificaion', validarToken, actualizarPerfil);
+usuarioRoutes.put('/perfilactualizar/:id_usuario', validarToken, actualizarPerfil);
 usuarioRoutes.get("/buscar/:id_usuario", validarToken, buscarUsuario);
 usuarioRoutes.post("/registrar", validarToken, validateRegistroUsuario, registrarUsuario);
 usuarioRoutes.put("/actualizar/:id_usuario", validarToken, validateActualizarUsuario, actualizarUsuario);

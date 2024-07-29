@@ -24,6 +24,7 @@ export const listarUsuarios = async (req, res) => {
 		});
 	}
 };
+
 // listar perfil
 export const perfil = async (req, res) => {
 	try {
@@ -103,74 +104,76 @@ export const registrarUsuario = async (req, res) => {
 		});
 	}
 };
-// actualiza el perfil
+
+// actualizar perfil
 export const actualizarPerfil = async (req, res) => {
 	try {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
-		}
-
-		const { identificacion } = req.params;
-		console.log("Identificación recibida en los parámetros:", identificacion);
-
-		const { nombres, apellidos, correo } = req.body;
-		console.log("Datos del cuerpo de la solicitud:", {
-			nombres,
-			apellidos,
-			correo,
+	  const errors = validationResult(req);
+	  if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	  }
+  
+	  const { id_usuario } = req.params;
+	  console.log("ID de usuario recibido en los parámetros:", id_usuario);
+  
+	  const { nombres, apellidos, correo } = req.body;
+	  console.log("Datos del cuerpo de la solicitud:", {
+		nombres,
+		apellidos,
+		correo,
+	  });
+  
+	  const [oldUsuario] = await pool.query(
+		"SELECT * FROM usuarios WHERE id_usuario = ?",
+		[id_usuario]
+	  );
+	  console.log("Resultado de la consulta del usuario:", oldUsuario);
+  
+	  if (oldUsuario.length === 0) {
+		return res.status(404).json({
+		  status: 404,
+		  message: "Usuario no encontrado",
 		});
-
-	/* 	const [oldUsuario] = await pool.query(
-			"SELECT * FROM usuarios WHERE identificacion = ?",
-			[identificacion]
-		);
-		console.log("Resultado de la consulta del usuario:", oldUsuario);
-
-		if (oldUsuario.length === 0) {
-			return res.status(404).json({
-				status: 404,
-				message: "Usuario no encontrado",
-			});
-		}
-
-		const updatedUsuario = {
-			nombres: nombres || oldUsuario[0].nombres,
-			apellidos: apellidos || oldUsuario[0].apellidos,
-			correo: correo || oldUsuario[0].correo,
-		}; */
-
-		const [result] = await pool.query(
-			"UPDATE usuarios SET nombres=?, apellidos=?, correo=? WHERE id_usuario = ?",
-			[
-				updatedUsuario.nombres,
-				updatedUsuario.apellidos,
-				updatedUsuario.correo,
-				id_usuario,
-			]
-		);
-
-		console.log("Resultado de la actualización:", result);
-
-		if (result.affectedRows > 0) {
-			res.status(200).json({
-				status: 200,
-				message: "El perfil del usuario ha sido actualizado.",
-			});
-		} else {
-			res.status(500).json({
-				status: 500,
-				message:
-					"No se pudo actualizar el perfil del usuario, inténtalo de nuevo.",
-			});
-		}
-	} catch (error) {
+	  }
+  
+	  const updatedUsuario = {
+		nombres: nombres || oldUsuario[0].nombres,
+		apellidos: apellidos || oldUsuario[0].apellidos,
+		correo: correo || oldUsuario[0].correo,
+	  };
+  
+	  const [result] = await pool.query(
+		"UPDATE usuarios SET nombres=?, apellidos=?, correo=? WHERE id_usuario = ?",
+		[
+		  updatedUsuario.nombres,
+		  updatedUsuario.apellidos,
+		  updatedUsuario.correo,
+		  id_usuario,
+		]
+	  );
+  
+	  console.log("Resultado de la actualización:", result);
+  
+	  if (result.affectedRows > 0) {
+		res.status(200).json({
+		  status: 200,
+		  message: "El perfil del usuario ha sido actualizado.",
+		});
+	  } else {
 		res.status(500).json({
-			status: 500,
-			message: "Error en el sistema: " + error.message,
+		  status: 500,
+		  message: "Hubo un problema al actualizar el perfil.",
 		});
+	  }
+	} catch (error) {
+	  console.error("Error en la actualización del perfil:", error);
+	  res.status(500).json({
+		status: 500,
+		message: "Error interno del servidor",
+	  });
 	}
-};
+  };
+  
 // actualizar usuario
 export const actualizarUsuario = async (req, res) => {
 	try {
