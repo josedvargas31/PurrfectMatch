@@ -16,7 +16,6 @@ export function Notificaciones() {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        // Simulate fetching data with a delay
         setTimeout(() => {
             setIsLoaded(true);
         }, 1500);
@@ -28,8 +27,8 @@ export function Notificaciones() {
 
     const peticionGet = async () => {
         try {
-            const response = await axiosClient.get('/mascota/listar');
-            setMascotas(response.data.filter(mascota => mascota.estado === 'proceso adopcion'));
+            const response = await axiosClient.get('/mascota/listarMU');
+            setMascotas(response.data);
         } catch (error) {
             console.log('Error en el servidor ' + error);
         }
@@ -68,6 +67,9 @@ export function Notificaciones() {
                     <Chip className="capitalize" color={statusColorMap[mascota.estado]} size="sm" variant="flat">
                         {mascota.estado}
                     </Chip>
+                    <p className="text-sm text-gray-700 mt-2"><strong>Solicitante:</strong> {mascota.nombres} {mascota.apellidos}</p>
+                    <p className="text-sm text-gray-700"><strong>Correo:</strong> {mascota.correo}</p>
+                    <p className="text-sm text-gray-700"><strong>Numero:</strong> {mascota.numero_cel}</p>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2">
                     <Skeleton isLoaded={isLoaded} className="rounded-lg">
@@ -105,7 +107,6 @@ export function Notificaciones() {
                     <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>
                     <Link href="#" color="warning" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
                 </nav>
-                {/*   <span className="hover:text-[#c5296c] text-[#FA67A7] cursor-pointer">Notificaciones</span> */}
             </header>
             <div className="z-0 w-full sm:w-full lg:w-12/12 xl:w-11/12 mt-20">
                 <div className="grid gap-4 mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xxl:grid-cols-4">

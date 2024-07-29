@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import iconos from '../../styles/iconos';
 import Icon from '../atomos/IconVolver';
 import { useNavigate } from 'react-router-dom';
@@ -10,22 +9,17 @@ import PerfilModal from '../templates/PerfilModal';
 import { Tooltip } from "@nextui-org/react";
 import axiosClient from '../axiosClient';
 
-
 const PerfilUsuario = () => {
-  const [sidebarAbierto, setSidebarAbierto] = useState(false);
+
   const [perfil, setPerfil] = useState(null);
-  const [finca, setFinca] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAcciones, setModalAcciones] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const [mensaje, setMensaje] = useState('');
   const [mode, setMode] = useState('create');
-  const identificacion = perfil?.identificacion;
-  const [usuarios, setUsuarios] = useState(null);
 
-  const toggleSidebar = () => {
-    setSidebarAbierto(!sidebarAbierto);
-  };
+
+
 
   const navigate = useNavigate();
 
@@ -33,51 +27,53 @@ const PerfilUsuario = () => {
     localStorage.clear();
     navigate('/');
   };
-  useEffect(() => {
 
-    const ObtenerDatos = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const getURL = "http://localhost:3000/usuario/perfil";
-        const response = await axiosClient.get(getURL, { headers: { token: token } });
-        console.log(response.data);
-        setPerfil(response.data.data);
-      } catch (error) {
-        console.error("Error al obtener la información", error.response ? error.response.data : error.message);
-      }
-    };
+  const ObtenerDatos = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const getURL = "http://localhost:3000/usuario/perfil";
+      const response = await axiosClient.get(getURL, { headers: { token: token } });
+      console.log(response.data);
+      setPerfil(response.data.data);
+    } catch (error) {
+      console.error("Error al obtener la información", error.response ? error.response.data : error.message);
+    }
+  };
+
+  useEffect(() => {
     ObtenerDatos();
   }, []);
 
-
   const handleSubmit = async (formData, e) => {
-    console.log('Datos enviados:', formData);
     e.preventDefault();
+    console.log('Datos enviados:', formData);
 
     try {
-      if (mode === 'update' && identificacion) {
-        await axiosClient.put(`http://localhost:3000/usuario/perfilactualizar/${identificacion}`, formData).then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Se actualizó con éxito la información",
-              showConfirmButton: false,
-              timer: 1500
+        const id_usuario = localStorage.getItem('id_usuario');
+
+        if (mode === 'update' && identificacion) {
+            await axiosClient.put(`http://localhost:3000/usuario/perfilactualizar/${id_usuario}`, formData).then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Se actualizó con éxito la información",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    ObtenerDatos();
+                } else {
+                    alert('Error al actualizar');
+                }
             });
-            ObtenerDatos();
-          } else {
-            alert('Error al actualizar');
-          }
-        });
-      }
-      setModalOpen(false);
+        }
+        setModalOpen(false);
     } catch (error) {
-      console.log('Error en el servidor ', error);
-      alert('Error en el servidor');
+        console.log('Error en el servidor ', error);
+        alert('Error en el servidor');
     }
-  };
+};
 
   const handleToggle = (mode, initialData) => {
     setInitialData(initialData);
@@ -88,7 +84,7 @@ const PerfilUsuario = () => {
   return (
     <>
       {perfil && (
-        <div className='my-12 flex justify-center'> {/* cambiar tamaño de la imagen */}
+        <div className='my-12 flex justify-center'>
           <div className='bg-white rounded-2xl' style={{ width: '1100px' }}>
             <div className='mt-10'>
               <span className='bg-green p-2 text-white'>{perfil.rol}</span>
@@ -96,7 +92,7 @@ const PerfilUsuario = () => {
             <div className='flex justify-end px-10 my-3'>
               <span className='mt-4 mr-80 text-3xl font-semibold' style={{ display: 'flex', justifyContent: 'center', borderRadius: '10px' }}>{`${perfil.nombres} ${perfil.apellidos}`}</span>
               <div className='mr-5 ml-10 text-black shadow-xl flex items-center rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer'>
-                <ButtonActualizar onClick={() => handleToggle('update', setPerfil(perfil))} />
+                <ButtonActualizar onClick={() => handleToggle('update', perfil)} />
               </div>
               <Tooltip content="Salir">
                 <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
@@ -171,7 +167,6 @@ const PerfilUsuario = () => {
           mode={mode}
         />
       </div>
-
     </>
   );
 };
