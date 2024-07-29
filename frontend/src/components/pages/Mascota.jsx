@@ -118,7 +118,9 @@ export function Mascotas() {
                         </Skeleton>
                         <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
-                            <ButtonActualizar onClick={() => handleToggle('update', setMascotaId(mascota))} />
+                        <Button color="default" variant="ghost" onPress={() => handleToggle('update', setMascotaId(mascota))}>
+           Actualizar
+       </Button>
                         </div>
                     </CardBody>
                 </Card>

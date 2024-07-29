@@ -27,7 +27,7 @@ export const UsuariosProvider = ({ children }) => {
         }
     }
 
-    //getUsuario: Realiza una solicitud para obtener los datos de un usuario específico por su identificación y actualiza el estado usuario.
+    //getUsuario: Realiza una solicitud para obtener los datos de un usuario específico por su id_usuario y actualiza el estado usuario.
     const getUsuario = (id_usuario) => {
         try {
             axiosClient.get(`/usuario/buscar${id_usuario}`).then((response) => {
