@@ -21,7 +21,6 @@ import iconos from '../../styles/iconos';
 import Icon from '../atomos/IconVolver';
 import MascotaModal from '../templates/MascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
-import ButtonActualizar from "../atomos/ButtonActualizar.jsx";
 import VacunaModal from '../templates/VacunaModal.jsx';
 
 export function Mascotas() {
@@ -105,22 +104,22 @@ export function Mascotas() {
                         </Chip>
                     </CardHeader>
                     <CardBody className="overflow-visible py-4">
-                    <Skeleton isLoaded={isLoaded} className="rounded-lg">
-                        <div className="relative w-full h-52 mb-4 overflow-hidden">
-                            <Image
-                                alt="Card background"
-                                className="object-cover rounded-xl w-full h-full"
-                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                                width={270}
-                                height={200}
-                            />
-                        </div>
+                        <Skeleton isLoaded={isLoaded} className="rounded-lg">
+                            <div className="relative w-full h-52 mb-4 overflow-hidden">
+                                <Image
+                                    alt="Card background"
+                                    className="object-cover rounded-xl w-full h-full"
+                                    src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                                    width={270}
+                                    height={200}
+                                />
+                            </div>
                         </Skeleton>
                         <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
-                        <Button color="default" variant="ghost" onPress={() => handleToggle('update', setMascotaId(mascota))}>
-           Actualizar
-       </Button>
+                            <Button color="default" variant="ghost" onPress={() => handleToggle('update', setMascotaId(mascota))}>
+                                Actualizar
+                            </Button>
                         </div>
                     </CardBody>
                 </Card>
@@ -341,16 +340,17 @@ export function Mascotas() {
                     </Tooltip>
                 </header>
             </div>
+
             <Ejemplo mascotas={mascotas} />
-            <MascotaModal
-                open={modalOpen}
-                onClose={handleToggle}
-                handleSubmit={handleSubmit}
-                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
-                title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
-                initialData={initialData}
-                mode={mode}
-            />
+                <MascotaModal
+                    open={modalOpen}
+                    onClose={handleToggle}
+                    handleSubmit={handleSubmit}
+                    actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
+                    title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
+                    initialData={initialData}
+                    mode={mode}
+                />
             <AccionesModal
                 open={modalAcciones}
                 onClose={handleToggleAcciones}
