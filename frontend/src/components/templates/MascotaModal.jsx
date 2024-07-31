@@ -1,6 +1,6 @@
 import React from 'react';
 import FormMascotas from '../moleculas/FormMascota';
-import { ModalAcciones } from '../organismos/Modal';
+import { ModalAcciones } from '../organismos/ModalMascota';
 
 function MascotaModal({ open, onClose, handleSubmit, actionLabel, title, initialData, mode }) {
     return (

@@ -21,7 +21,6 @@ import iconos from '../../styles/iconos';
 import Icon from '../atomos/IconVolver';
 import MascotaModal from '../templates/MascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
-import ButtonActualizar from "../atomos/ButtonActualizar.jsx";
 import VacunaModal from '../templates/VacunaModal.jsx';
 
 export function Mascotas() {
@@ -95,7 +94,7 @@ export function Mascotas() {
 
         const renderCard = useCallback((mascota) => {
             return (
-                <Card className="p-2 " key={mascota.id_mascota}>
+                <Card className="p-2 bg-gray-200" key={mascota.id_mascota}>
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                         <h4 className="font-bold text-2xl mb-1 text-gray-800">Nombre: {mascota.nombre}</h4>
                         <small className="text-gray-600 mb-2">Género: {mascota.genero}</small>
@@ -105,22 +104,22 @@ export function Mascotas() {
                         </Chip>
                     </CardHeader>
                     <CardBody className="overflow-visible py-4">
-                    <Skeleton isLoaded={isLoaded} className="rounded-lg">
-                        <div className="relative w-full h-52 mb-4 overflow-hidden">
-                            <Image
-                                alt="Card background"
-                                className="object-cover rounded-xl w-full h-full"
-                                src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
-                                width={270}
-                                height={200}
-                            />
-                        </div>
+                        <Skeleton isLoaded={isLoaded} className="rounded-lg">
+                            <div className="relative w-full mb-4 overflow-hidden">
+                                <Image
+                                    alt="Card background"
+                                    className="object-cover rounded-xl w-full h-full"
+                                    src={mascota.img ? `${axiosClient.defaults.baseURL}/uploads/${mascota.img}` : "https://nextui.org/images/hero-card-complete.jpeg"}
+                                    width='auto'
+                                    height='auto'
+                                />
+                            </div>
                         </Skeleton>
                         <p className="text-sm text-gray-700 font-medium mb-4">{mascota.descripcion}</p>
                         <div className="mt-2 flex justify-start gap-2">
-                        <Button color="default" variant="ghost" onPress={() => handleToggle('update', setMascotaId(mascota))}>
-           Actualizar
-       </Button>
+                            <Button color="default" variant="ghost" onPress={() => handleToggle('update', setMascotaId(mascota))}>
+                                Actualizar
+                            </Button>
                         </div>
                     </CardBody>
                 </Card>
@@ -305,11 +304,11 @@ export function Mascotas() {
     return (
         <>
             <div className="flex flex-col items-center p-8 w-full">
-                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md max-w-screen-xl flex-wrap mx-auto p-4">
-                    <h1 className="text-3xl font-semibold text-orange-300">Perrfect Match</h1>
+                <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-zinc-300 shadow-md max-w-screen-xxl flex-wrap mx-auto p-4">
+                    <h1 className="text-3xl font-semibold text-blue-400">Perrfect Match</h1>
                     <nav className="flex-grow flex justify-center space-x-24">
-                        <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>
-                        <Link href="/notificaciones" color="warning" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                        <Link href="/mascotas" color="default" className="mx-2 text-lg cursor-pointer">Registrar</Link>
+                        <Link href="/notificaciones" color="default" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
                     </nav>
                     <Tooltip content="Salir">
                         <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
@@ -341,16 +340,17 @@ export function Mascotas() {
                     </Tooltip>
                 </header>
             </div>
+
             <Ejemplo mascotas={mascotas} />
-            <MascotaModal
-                open={modalOpen}
-                onClose={handleToggle}
-                handleSubmit={handleSubmit}
-                actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
-                title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
-                initialData={initialData}
-                mode={mode}
-            />
+                <MascotaModal
+                    open={modalOpen}
+                    onClose={handleToggle}
+                    handleSubmit={handleSubmit}
+                    actionLabel={mode === 'create' ? 'Registrar' : 'Actualizar'}
+                    title={mode === 'create' ? 'Registrar Mascota' : 'Actualizar Mascota'}
+                    initialData={initialData}
+                    mode={mode}
+                />
             <AccionesModal
                 open={modalAcciones}
                 onClose={handleToggleAcciones}
