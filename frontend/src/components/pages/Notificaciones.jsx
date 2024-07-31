@@ -59,7 +59,7 @@ export function Notificaciones() {
     const renderCard = useCallback((mascota) => {
         const isAdoptada = mascota.estado === 'proceso_adopcion';
         return (
-            <Card className={`p-4 m-4 shadow-lg ${isAdoptada ? 'bg-gray-300' : ''}`}>
+            <Card className={`p-4 m-4 bg-gray-300 shadow-lg ${isAdoptada ? '' : ''}`}>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                     <h4 className="font-bold text-2xl mb-1 text-gray-800">Nombre: {mascota.nombre}</h4>
                     <small className="text-gray-600 mb-2">Género: {mascota.genero}</small>
@@ -101,11 +101,11 @@ export function Notificaciones() {
 
     return (
         <div className="flex flex-col items-center p-4 w-full">
-            <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-white shadow-md max-w-screen-xl flex-wrap mx-auto p-4">
-                <h1 className="text-3xl font-semibold text-orange-300">Perrfect Match</h1>
+            <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center h-14 bg-zinc-300 shadow-md max-w-screen-xxl flex-wrap mx-auto p-4">
+            <h1 className="text-3xl font-semibold text-blue-400">Perrfect Match</h1>
                 <nav className="flex-grow flex justify-center space-x-24">
-                    <Link href="/mascotas" color="warning" className="mx-2 text-lg cursor-pointer">Registrar</Link>
-                    <Link href="#" color="warning" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                    <Link href="/mascotas" color="default" className="mx-2 text-lg cursor-pointer">Registrar</Link>
+                    <Link href="#" color="default" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
                 </nav>
             </header>
             <div className="z-0 w-full sm:w-full lg:w-12/12 xl:w-11/12 mt-20">

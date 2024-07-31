@@ -81,7 +81,7 @@ function ListMascota({ initialData, onClose }) {
 
     return (
         <>
-            <Card className="py-2">
+            <Card className="py-2 bg-gray-200">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                     <h4 className="font-bold text-large">Nombre: {initialData.nombre}</h4>
                     <small className="text-default-500">Sexo: {initialData.genero}</small>
