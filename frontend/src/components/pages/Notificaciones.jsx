@@ -3,8 +3,13 @@ import Swal from 'sweetalert2';
 import axiosClient from '../axiosClient.js';
 import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardBody, Image, Link, Chip, Skeleton } from "@nextui-org/react";
+import iconos from '../../styles/iconos';
+import Icon from '../atomos/IconVolver';
+import { Tooltip } from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
 
 export function Notificaciones() {
+    const navigate = useNavigate();
     const statusColorMap = {
         adoptar: "success",
         adoptada: "default",
@@ -99,14 +104,48 @@ export function Notificaciones() {
         );
     }, [isLoaded]);
 
+    const logout = () => {
+        localStorage.clear();
+        navigate('/');
+    };
+
     return (
-        <div className="flex flex-col items-center p-4 w-full">
-            <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center h-14 bg-zinc-300 shadow-md max-w-screen-xxl flex-wrap mx-auto p-4">
-            <h1 className="text-3xl font-semibold text-blue-400">Perrfect Match</h1>
+        <div className="flex flex-col items-center p-8 w-full">
+            <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-zinc-300 shadow-md max-w-screen-xxl flex-wrap mx-auto p-4">
+                <h1 className="text-3xl font-semibold text-blue-400">Perrfect Match</h1>
                 <nav className="flex-grow flex justify-center space-x-24">
                     <Link href="/mascotas" color="default" className="mx-2 text-lg cursor-pointer">Registrar</Link>
-                    <Link href="#" color="default" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                    <Link href="/notificaciones" color="default" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                    <Link href="/graficas" color="default" className="mx-2 text-lg cursor-pointer">Graficas</Link>
                 </nav>
+                <Tooltip content="Salir">
+                    <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
+                        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: "btn btn-success",
+                                cancelButton: "btn btn-danger",
+                                actions: "gap-5"
+                            },
+                            buttonsStyling: false
+                        });
+
+                        swalWithBootstrapButtons.fire({
+                            title: "¿Estás Seguro que deseas Cerrar Sesión?",
+                            text: "",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Salir",
+                            cancelButtonText: "Cancelar",
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                logout();
+                            }
+                        });
+                    }}>
+                        <Icon className="w-5 h-5" icon={iconos.iconoSalir} />
+                    </div>
+                </Tooltip>
             </header>
             <div className="z-0 w-full sm:w-full lg:w-12/12 xl:w-11/12 mt-20">
                 <div className="grid gap-4 mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xxl:grid-cols-4">

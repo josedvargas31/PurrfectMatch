@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import ButtonActualizar from '../atomos/ButtonActualizar';
 import AccionesModal from '../organismos/ModalAcciones';
 import PerfilModal from '../templates/PerfilModal';
-import { Tooltip } from "@nextui-org/react";
+import { Tooltip, Card, Button, Link } from "@nextui-org/react";
 import axiosClient from '../axiosClient';
 
 const PerfilUsuario = () => {
@@ -17,9 +17,6 @@ const PerfilUsuario = () => {
   const [initialData, setInitialData] = useState(null);
   const [mensaje, setMensaje] = useState('');
   const [mode, setMode] = useState('create');
-
-
-
 
   const navigate = useNavigate();
 
@@ -44,36 +41,37 @@ const PerfilUsuario = () => {
     ObtenerDatos();
   }, []);
 
-  const handleSubmit = async (formData, e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Datos enviados:', formData);
 
     try {
-        const id_usuario = localStorage.getItem('id_usuario');
+      const id_usuario = JSON.parse(localStorage.getItem('user'));
 
-        if (mode === 'update' && identificacion) {
-            await axiosClient.put(`http://localhost:3000/usuario/perfilactualizar/${id_usuario}`, formData).then((response) => {
-                console.log(response);
-                if (response.status === 200) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Se actualizó con éxito la información",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    ObtenerDatos();
-                } else {
-                    alert('Error al actualizar');
-                }
+      if (mode === 'update') {
+        console.log(id_usuario);
+        await axiosClient.put(`/usuario/perfilactualizar/${id_usuario.identificacion}`, formData).then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Se actualizó con éxito la información",
+              showConfirmButton: false,
+              timer: 1500
             });
-        }
-        setModalOpen(false);
+            ObtenerDatos();
+          } else {
+            alert('Error al actualizar');
+          }
+        });
+      }
+      setModalOpen(false);
     } catch (error) {
-        console.log('Error en el servidor ', error);
-        alert('Error en el servidor');
+      console.log('Error en el servidor ', error);
+      alert('Error en el servidor');
     }
-};
+  };
 
   const handleToggle = (mode, initialData) => {
     setInitialData(initialData);
@@ -83,90 +81,97 @@ const PerfilUsuario = () => {
 
   return (
     <>
+      <div className="flex flex-col items-center p-8 w-full">
+        <header className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-10 h-14 bg-zinc-300 shadow-md max-w-screen-xxl flex-wrap mx-auto p-4">
+          <h1 className="text-3xl font-semibold text-blue-400">Perrfect Match</h1>
+          <nav className="flex-grow flex justify-center space-x-24">
+            <Link href="/listmascotas" color="default" className="mx-2 text-lg cursor-pointer">Listas de mascotas</Link>
+          </nav>
+          <Link href="/perfil" color="black" className="mx-2 text-lg cursor-pointer">Perfil</Link>
+        </header>
+      </div>
       {perfil && (
         <div className='my-12 flex justify-center'>
-          <div className='bg-white rounded-2xl' style={{ width: '1100px' }}>
-            <div className='mt-10'>
-              <span className='bg-green p-2 text-white'>{perfil.rol}</span>
-            </div>
-            <div className='flex justify-end px-10 my-3'>
-              <span className='mt-4 mr-80 text-3xl font-semibold' style={{ display: 'flex', justifyContent: 'center', borderRadius: '10px' }}>{`${perfil.nombres} ${perfil.apellidos}`}</span>
-              <div className='mr-5 ml-10 text-black shadow-xl flex items-center rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer'>
-                <ButtonActualizar onClick={() => handleToggle('update', perfil)} />
-              </div>
-              <Tooltip content="Salir">
-                <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
-                  const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                      confirmButton: "btn btn-success",
-                      cancelButton: "btn btn-danger",
-                      actions: "gap-5"
-                    },
-                    buttonsStyling: false
-                  });
-
-                  swalWithBootstrapButtons.fire({
-                    title: "¿Estás Seguro que deseas Cerrar Sesión?",
-                    text: "",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Salir",
-                    cancelButtonText: "Cancelar",
-                    reverseButtons: true
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      logout();
-                    }
-                  });
-                }}>
-                  <Icon className="w-5 h-5" icon={iconos.iconoSalir} />
+          <Card css={{ maxWidth: "1100px" }} className="bg-white rounded-2xl">
+            <div className="p-10">
+              <div className="flex flex-col items-start">
+                <h4 className="mb-4 text-3xl font-semibold">{perfil.nombres} {perfil.apellidos}</h4>
+                <div className="flex items-center mb-4">
+                  <Button auto flat color="warning" onClick={() => handleToggle('update', perfil)}>
+                    Actualizar
+                  </Button>
                 </div>
-              </Tooltip>
+                <div className="flex items-center">
+                  <Tooltip content="Salir">
+                    <Button auto flat color="error" onClick={() => {
+                      const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                          confirmButton: "btn btn-success",
+                          cancelButton: "btn btn-danger",
+                          actions: "gap-5"
+                        },
+                        buttonsStyling: false
+                      });
+
+                      swalWithBootstrapButtons.fire({
+                        title: "¿Estás Seguro que deseas Cerrar Sesión?",
+                        text: "",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Salir",
+                        cancelButtonText: "Cancelar",
+                        reverseButtons: true
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          logout();
+                        }
+                      });
+                    }}>
+                      <Icon className="w-5 h-5" icon={iconos.iconoSalir} />
+                    </Button>
+                  </Tooltip>
+                </div>
+              </div>
+
+              <div className="my-4 border-b-2 border-gray-300" />
+              <h6 className="text-xl font-semibold">Información del Usuario:</h6>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="font-medium text-lg">Identificación:</label>
+                  <p>{perfil.identificacion}</p>
+                </div>
+                <div>
+                  <label className="font-medium text-lg">Nombres:</label>
+                  <p>{perfil.nombres}</p>
+                </div>
+                <div>
+                  <label className="font-medium text-lg">Apellidos:</label>
+                  <p>{perfil.apellidos}</p>
+                </div>
+                <div>
+                  <label className="font-medium text-lg">Correo Electrónico:</label>
+                  <p>{perfil.correo}</p>
+                </div>
+              </div>
             </div>
-            <span className='ml-10 mr-60 text-xl font-semibold'>Información del Usuario:</span>
-            <hr className='mx-8' />
-            <ul className='mt-4 flex justify-between px-10'>
-              <li className='my-3'>
-                <label style={{ fontWeight: '500', fontSize: '19px' }}> Identificación: </label>
-                <br />
-                <label>{perfil.identificacion}</label>
-              </li>
-              <li className='my-3'>
-                <label style={{ fontWeight: '500', fontSize: '19px' }}> Nombres: </label>
-                <br />
-                <label>{perfil.nombres}</label>
-              </li>
-              <li className='my-3'>
-                <label style={{ fontWeight: '500', fontSize: '19px' }}> Apellidos: </label>
-                <br />
-                <label>{perfil.apellidos}</label>
-              </li>
-              <li className='mt-3'>
-                <label style={{ fontWeight: '500', fontSize: '19px' }}> Correo Electrónico: </label>
-                <br />
-                <label>{perfil.correo}</label>
-              </li>
-            </ul>
-          </div>
+          </Card>
         </div>
       )}
 
-      <div className='ml-28 items-center p-10'>
-        <AccionesModal
-          isOpen={modalAcciones}
-          onClose={() => setModalAcciones(false)}
-          label={mensaje}
-        />
-        <PerfilModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          title={mode === 'update' ? 'Actualizar Información de Usuario' : ' Actualizar Perfil'}
-          actionLabel={mode === 'update' ? 'Actualizar' : 'Actualizar'}
-          initialData={initialData}
-          handleSubmit={handleSubmit}
-          mode={mode}
-        />
-      </div>
+      <AccionesModal
+        isOpen={modalAcciones}
+        onClose={() => setModalAcciones(false)}
+        label={mensaje}
+      />
+      <PerfilModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={mode === 'update' ? 'Actualizar Información de Usuario' : ' Actualizar Perfil'}
+        actionLabel={mode === 'update' ? 'Actualizar' : 'Actualizar'}
+        initialData={initialData}
+        handleSubmit={handleSubmit}
+        mode={mode}
+      />
     </>
   );
 };

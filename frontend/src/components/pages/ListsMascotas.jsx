@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from "@nextui-org/link";
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 import axiosClient from '../axiosClient.js';
 import MascotasContext from '../../context/MascotasContext.jsx';
 import {
@@ -17,10 +18,13 @@ import { ChevronDownIcon } from "../nextUI/ChevronDownIcon.jsx";
 import { Card, CardHeader, CardBody, Image, Skeleton } from "@nextui-org/react";
 import ListMascotaModal from '../templates/ListsMascotaModal.jsx';
 import AccionesModal from '../organismos/ModalAcciones.jsx';
+import iconos from '../../styles/iconos';
+import Icon from '../atomos/IconVolver';
+import { Tooltip } from "@nextui-org/react";
 
 
 export function ListsMascotas() {
-
+    const navigate = useNavigate();
     const statusColorMap = {
         adoptar: "success",
         adoptada: "default",
@@ -209,6 +213,10 @@ export function ListsMascotas() {
         setModalOpen(false);
         peticionGet();  // Actualiza los datos de las mascotas después de cerrar el modal
     };
+    const logout = () => {
+        localStorage.clear();
+        navigate('/');
+    };
 
     return (
         <>
@@ -218,7 +226,34 @@ export function ListsMascotas() {
                     <nav className="flex-grow flex justify-center space-x-24">
                         <Link color="default" className="mx-2 text-lg cursor-pointer">Listas de mascotas</Link>
                     </nav>
-                    <Link href="/perfil" color="black" className="mx-2 text-lg cursor-pointer">Perfil</Link>
+                    <Tooltip content="Salir">
+                        <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
+                            const swalWithBootstrapButtons = Swal.mixin({
+                                customClass: {
+                                    confirmButton: "btn btn-success",
+                                    cancelButton: "btn btn-danger",
+                                    actions: "gap-5"
+                                },
+                                buttonsStyling: false
+                            });
+
+                            swalWithBootstrapButtons.fire({
+                                title: "¿Estás Seguro que deseas Cerrar Sesión?",
+                                text: "",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "Salir",
+                                cancelButtonText: "Cancelar",
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    logout();
+                                }
+                            });
+                        }}>
+                            <Icon className="w-5 h-5" icon={iconos.iconoSalir} />
+                        </div>
+                    </Tooltip>
                 </header>
             </div>
             <AccionesModal

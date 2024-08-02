@@ -309,6 +309,7 @@ export function Mascotas() {
                     <nav className="flex-grow flex justify-center space-x-24">
                         <Link href="/mascotas" color="default" className="mx-2 text-lg cursor-pointer">Registrar</Link>
                         <Link href="/notificaciones" color="default" className="mx-2 text-lg cursor-pointer">Notificaciones</Link>
+                        <Link href="/graficas" color="default" className="mx-2 text-lg cursor-pointer">Graficas</Link>
                     </nav>
                     <Tooltip content="Salir">
                         <div className="text-black shadow-xl flex items-center py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-green hover:text-white cursor-pointer" onClick={() => {
