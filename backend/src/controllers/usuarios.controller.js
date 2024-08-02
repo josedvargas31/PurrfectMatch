@@ -33,6 +33,7 @@ export const perfil = async (req, res) => {
 		const [result] = await pool.query(
 			`
             SELECT  
+				u.id_usuario,
                 u.nombres,
                 u.identificacion,
                 u.apellidos,
@@ -113,8 +114,8 @@ export const actualizarPerfil = async (req, res) => {
 		return res.status(400).json({ errors: errors.array() });
 	  }
   
-	  const { id_usuario } = req.params;
-	  console.log("ID de usuario recibido en los parámetros:", id_usuario);
+	  const { identificacion } = req.params; // Utiliza identificacion en lugar de id_usuario
+	  console.log("Identificación recibida en los parámetros:", identificacion);
   
 	  const { nombres, apellidos, correo } = req.body;
 	  console.log("Datos del cuerpo de la solicitud:", {
@@ -124,8 +125,8 @@ export const actualizarPerfil = async (req, res) => {
 	  });
   
 	  const [oldUsuario] = await pool.query(
-		"SELECT * FROM usuarios WHERE id_usuario = ?",
-		[id_usuario]
+		"SELECT * FROM usuarios WHERE identificacion = ?",
+		[identificacion]
 	  );
 	  console.log("Resultado de la consulta del usuario:", oldUsuario);
   
@@ -143,12 +144,12 @@ export const actualizarPerfil = async (req, res) => {
 	  };
   
 	  const [result] = await pool.query(
-		"UPDATE usuarios SET nombres=?, apellidos=?, correo=? WHERE id_usuario = ?",
+		"UPDATE usuarios SET nombres=?, apellidos=?, correo=? WHERE identificacion = ?",
 		[
 		  updatedUsuario.nombres,
 		  updatedUsuario.apellidos,
 		  updatedUsuario.correo,
-		  id_usuario,
+		  identificacion,
 		]
 	  );
   
@@ -173,7 +174,7 @@ export const actualizarPerfil = async (req, res) => {
 	  });
 	}
   };
-  
+    
 // actualizar usuario
 export const actualizarUsuario = async (req, res) => {
 	try {

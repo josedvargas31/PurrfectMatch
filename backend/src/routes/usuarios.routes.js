@@ -10,9 +10,9 @@ const usuarioRoutes = Router();
 
 usuarioRoutes.get("/listar", validarToken, listarUsuarios);
 usuarioRoutes.get('/perfil', validarToken, perfil);
-usuarioRoutes.put('/perfilactualizar/:id_usuario', validarToken, actualizarPerfil);
+usuarioRoutes.put('/perfilactualizar/:identificacion', actualizarPerfil);
 usuarioRoutes.get("/buscar/:id_usuario", validarToken, buscarUsuario);
-usuarioRoutes.post("/registrar", validarToken, validateRegistroUsuario, registrarUsuario);
+usuarioRoutes.post("/registrar", /* validarToken, */ validateRegistroUsuario, registrarUsuario);
 usuarioRoutes.put("/actualizar/:id_usuario", validarToken, validateActualizarUsuario, actualizarUsuario);
 usuarioRoutes.delete("/eliminar/:id_usuario", validarToken, eliminarUsuario);
 

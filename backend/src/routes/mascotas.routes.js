@@ -8,6 +8,7 @@ import {
   iniciarAdopcion,
   administrarAdopcion,
   listarMascotasConUsuarios,
+  obtenerConteoPorEstado,
 } from '../controllers/mascotas.controller.js';
 import {
   validateRegistroMascota,
@@ -16,11 +17,11 @@ import {
 import upload from '../config/multer.config.js';  // Importar configuración de multer
 import { uploadImage, deleteImage } from '../controllers/imagenes.controller.js';
 
-
 const mascotaRoutes = Router();
 
 mascotaRoutes.get('/listar', listarMascotas);
 mascotaRoutes.get('/listarMU', listarMascotasConUsuarios);
+mascotaRoutes.get('/conteo/estado', obtenerConteoPorEstado);
 mascotaRoutes.post('/registrar', upload.single('img'), uploadImage, validateRegistroMascota, registrarMascota);
 mascotaRoutes.put('/actualizar/:id_mascota', upload.single('img'), uploadImage, validateActualizarMascota, actualizarMascota);
 mascotaRoutes.delete('/eliminar/:id_mascota', eliminarMascota); 
