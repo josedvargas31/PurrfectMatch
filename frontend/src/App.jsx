@@ -12,6 +12,7 @@ import GlobalProvider from "./context/GlobalContext";
 import { ListsMascotas } from "./components/pages/ListsMascotas";
 import { Notificaciones } from "./components/pages/Notificaciones";
 import PerfilUsuario from "./components/pages/Perfil";
+import Graficas from "./components/pages/Grafica";
 
 // import { Notificaciones } from "./components/pages/notificaciones";
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/mascotas" element={<Mascotas />} />
                 <Route path="/inicioadmi" element={<DashboardAdmi />} />
                 <Route path="/notificaciones" element={<Notificaciones />} />
+                <Route path="/graficas" element={<Graficas />} />
               </>
             )}
             {user && user.rol === 'usuario' && (

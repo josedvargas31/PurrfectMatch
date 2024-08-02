@@ -11,6 +11,8 @@ const FormPerfil = () => {
   const [apellidos, setApellidos] = useState('');
   const [correo, setCorreo] = useState('');
 
+  const [identificacion, setIdentificacion] = useState('');
+
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
@@ -20,6 +22,7 @@ const FormPerfil = () => {
         console.log('Datos obtenidos:', response.data);
         setPerfil(response.data.data);
         setNombres(response.data.data.nombres);
+        setIdentificacion(response.data.data.identificacion); // Asegúrate de que sea identificacion
         setApellidos(response.data.data.apellidos);
         setCorreo(response.data.data.correo);
       } catch (error) {
@@ -34,13 +37,12 @@ const FormPerfil = () => {
     e.preventDefault();
     if (!perfil) return;
 
-    const id_usuario = perfil.id_usuario;
     console.log('Datos a enviar:', { nombres, apellidos, correo });
 
     try {
       const token = localStorage.getItem('token');
       const response = await axiosClient.put(
-        `http://localhost:3000/usuario/perfilactualizar/${id_usuario}`,
+        `http://localhost:3000/usuario/perfilactualizar/${identificacion}`,
         { nombres, apellidos, correo },
         { headers: { Authorization: `Bearer ${token}` } }
       );
