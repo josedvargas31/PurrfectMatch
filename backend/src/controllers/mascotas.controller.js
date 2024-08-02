@@ -161,6 +161,26 @@ export const listarMascotasConUsuarios = async (req, res) => {
         });
     }
 };
+
+// Controlador para obtener conteo de mascotas por estado
+export const obtenerConteoPorEstado = async (req, res) => {
+    try {
+        // Consulta para obtener el conteo de mascotas por estado
+        const [result] = await pool.query(`
+            SELECT estado, COUNT(*) as total
+            FROM mascotas
+            GROUP BY estado
+        `);
+
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: 'Error en el sistema: ' + error.message
+        });
+    }
+};
+
 // Registrar mascota
 export const registrarMascota = async (req, res) => {
 	try {

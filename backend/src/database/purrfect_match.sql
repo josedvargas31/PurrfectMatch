@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-07-2024 a las 03:07:45
+-- Tiempo de generación: 01-08-2024 a las 15:10:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,20 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `purrfect_match`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `adopciones`
---
-
-CREATE TABLE `adopciones` (
-  `id_adopcion` int(11) NOT NULL,
-  `fk_id_mascota` int(11) NOT NULL,
-  `fk_id_usuario_adoptante` int(11) NOT NULL,
-  `fecha_adopcion` date DEFAULT NULL,
-  `estado` enum('aceptada','rechazada') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -60,28 +46,21 @@ CREATE TABLE `mascotas` (
 --
 
 INSERT INTO `mascotas` (`id_mascota`, `nombre`, `genero`, `raza`, `edad`, `img`, `descripcion`, `estado`, `fk_id_usuario`, `especie`, `esterilizacion`) VALUES
-(2, 'manchas', 'Hembra', 'Rexq', 5, 'img-1721571784753-418476505.JPG', 'Mascota amigable y enérgicaqwe...', 'adoptada', 4, '', NULL),
-(3, 'lulu', 'Hembra', 'Bulldog', 1, 'img-1721695096065-78416463.jpg', 'Mascota amigable y enérgica...', 'adoptada', 4, '', NULL),
-(4, 'manchas', 'Hembra', 'Rex', 1, 'img-1721695111472-773592146.png', 'manchas es una amscota muy amigable, es muy inteligente y hace todo por comer jsjsjs es mediana, es vacunada y para ams informacion comunitate!', 'adoptar', 4, 'undefined', NULL),
-(9, 'qwe', 'Macho', 'Bulldog', 11, NULL, 'qwe', 'adoptar', 1, '', NULL),
-(10, 'qwe', 'Macho', 'qwe', 1, 'img-1721695142064-748228068.png', 'qwe', 'adoptar', 1, '', NULL),
-(17, 'estrella', 'Hembra', 'Bulldog', 3, NULL, 'Mascota amigable y enérgica.', 'adoptar', 1, '', NULL),
-(18, 'estrella', 'Hembra', 'Bulldog', 3, NULL, 'Mascota amigable y enérgica.', 'adoptar', 1, '', NULL),
-(19, 'd', 'Macho', 'd', 1, 'img-1721743625616-120854370.png', 'af rwe gth rhrgt', 'adoptar', 1, '', NULL),
-(20, 'netflix', 'Macho', 'netflix', 2, 'img-1721743650205-844876723.png', 'netflix', 'adoptar', 1, '', NULL),
-(21, 'estrella', 'Hembra', 'Bulldog', 3, NULL, 'Mascota amigable y enérgica.', 'adoptar', 1, '', NULL),
-(22, 'estrella', 'Hembra', 'Bulldog', 3, NULL, 'Mascota amigable y enérgica.', 'adoptar', 1, '', NULL),
-(23, 'manchas', 'Hembra', 'Rex', 5, NULL, 'Mascota amigable y enérgicaqwe...', 'adoptar', 1, 'lorop', NULL),
-(24, 'qwe', 'Macho', 'qwe', 2, 'img-1722129351772-139415307.jpeg', 'qwe', 'adoptar', 1, 'Gato', NULL),
-(25, 'bella', 'Hembra', 'Rex', 2, 'img-1722129378241-858905539.png', 'es una oveja muy hermosa de buen cudiado, tamaño medio y le gusta el campo abierto es divertida y no causa problemas', 'adoptar', 1, 'Oveja', NULL),
-(26, 'qwe', 'Macho', 'qwe', 2, 'img-1722129450252-912793764.jpg', 'wqer', 'adoptar', 1, 'Perro', NULL),
-(27, 'estrella', 'Hembra', 'Bulldog', 3, NULL, 'Mascota amigable y enérgica.', 'adoptar', 1, 'loro', NULL),
-(28, 'estrella', 'Hembra', 'Bulldog', 3, 'img-1722174684210-571254470.png', 'Mascota amigable y enérgica.', 'adoptar', 1, 'loro', NULL),
-(29, 'estrella', 'Hembra', 'Bulldog', 3, 'img-1722174796149-647715306.png', 'Mascota amigable y enérgica.', 'adoptar', 1, 'loro', 'no se'),
-(30, 'estrella', 'Hembra', 'Bulldog', 3, 'img-1722174929063-943167705.png', 'Mascota amigable y enérgica.', 'adoptar', 1, 'loro', 'si'),
-(31, 'estrella', 'Hembra', 'Bulldog', 3, 'img-1722175887786-540337709.png', 'Mascota amigable y enérgica.', 'adoptar', 1, 'loro', 'si'),
-(32, 'qe', 'Macho', 'qw', 2, 'img-1722176263628-442030665.jpeg', 'qeqwdc svs', 'adoptar', 1, 'Perro', 'no'),
-(33, 'negro', 'Macho', 'Rex', 2, 'img-1722176318577-34026561.jpg', 'es un caballo hermoso negro, es pacifico y le gusta estar en el campo libre, es feliz y alegre, adopta!', 'adoptar', 1, 'Caballo', 'si');
+(1, 'Chillon', 'Macho', 'Criollo', 5, 'img-1722406675989-203110810.JPG', 'Mirada suave y pelaje abundante, siempre listo para un abrazo. Su tamaño imponente contrasta con su naturaleza tranquila y protectora.', 'adoptada', 4, 'Perro', 'si'),
+(2, 'Chiribico', 'Macho', 'Criollo', 5, 'img-1722406718302-675174420.jpeg', 'Lleno de energía, con ojos brillantes y una cola que parece un motor en constante movimiento. Adora los juegos mentales y las actividades al aire libre.', 'proceso adopcion', 4, 'Perro', 'si'),
+(3, 'Chispitas', 'Hembra', 'Criollo', 6, 'img-1722406761306-803433814.jpeg', 'Cara arrugada y orejas erguidas, siempre dispuesto a hacer reír con sus travesuras. Su pequeño tamaño no le impide tener una gran personalidad.', 'adoptada', 4, 'Perro', 'si'),
+(4, 'Dante', 'Macho', 'Criollo', 4, 'img-1722406820649-405711535.JPG', ' Un Galgo de cuerpo esbelto y patas largas, con un aire aristocrático y una velocidad sorprendente. A pesar de su apariencia delicada, es un perro muy cariñoso.', 'adoptar', 1, 'Perro', 'si'),
+(5, 'Fox', 'Macho', 'Criollo', 4, 'img-1722406858794-258527387.jpeg', 'Musculatura fuerte y expresión seria, pero con un corazón de oro. Su lealtad hacia su familia es inquebrantable.', 'adoptar', 1, 'Perro', 'si'),
+(6, 'Mascara', 'Macho', 'Criollo', 3, 'img-1722406900622-119356898.JPG', 'Pelo dorado y sonrisa contagiosa. Adora nadar, jugar a la pelota y explorar nuevos lugares.', 'adoptar', 1, 'Perro', 'si'),
+(7, 'Nena', 'Hembra', 'Criollo', 6, 'img-1722406951366-873784961.JPG', 'Ojos azules y pelaje grueso, diseñado para soportar el frío extremo. Su energía es inagotable y necesita mucho ejercicio.', 'adoptar', 1, 'Perro', 'si'),
+(8, 'Nuche', 'Hembra', 'Criollo', 4, 'img-1722406989273-1167030.JPG', 'Carácter dulce y paciente. Adora a los niños y es ideal para familias.', 'adoptar', 1, 'Perro', 'si'),
+(9, 'Princesa', 'Hembra', 'Criollo', 5, 'img-1722407061771-822215444.JPG', 'Patas cortas y energía inagotable. Siempre alerta y listo para ladrar ante cualquier sonido extraño.', 'adoptar', 1, 'Perro', 'si'),
+(10, 'Rifle', 'Macho', 'Criollo', 5, 'img-1722407118883-818512561.JPG', 'Pelo rizado y resistente al agua. Es un excelente nadador y disfruta mucho de los juegos acuáticos.', 'adoptar', 1, 'Perro', 'si'),
+(11, 'Rufo', 'Macho', 'Criollo', 2, 'img-1722407163652-792661403.JPG', 'Cuerpo robusto y orejas largas. Es un perro de caza muy silencioso y tenaz.', 'adoptar', 1, 'Perro', 'no'),
+(12, 'Solovino', 'Macho', 'Criollo', 3, 'img-1722407199741-200041432.JPG', ' Orejas largas y nariz húmeda, con un olfato increíble. Siempre está buscando algo que olfatear y es un experto en escapar.', 'adoptar', 1, 'Perro', 'si'),
+(13, 'Vainilla', 'Macho', 'Criollo', 4, 'img-1722407238803-875513566.JPG', 'Cuerpo imponente y corazón tierno. A pesar de su tamaño, es un perro muy tranquilo y cariñoso con los niños.', 'adoptar', 1, 'Perro', 'si'),
+(14, 'Zuricata', 'Hembra', 'Criollo', 4, 'img-1722407290516-231700529.jpeg', 'Orejas largas y nariz húmeda, con un olfato increíble. Siempre está buscando algo que olfatear y es un experto en escapar.', 'adoptar', 1, 'Perro', 'si'),
+(15, 'colas', 'Macho', 'Criollo', 2, 'img-1722517341649-940234594.png', 'es una mascota con cola hermosa', 'adoptar', 1, 'Perro', 'si');
 
 -- --------------------------------------------------------
 
@@ -106,10 +85,10 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id_usuario`, `identificacion`, `nombres`, `apellidos`, `correo`, `numero_cel`, `password`, `rol`) VALUES
 (1, 1077848366, 'Jose D', 'Zamora Vargas', 'jose@gmail.com', '3158716879', '12345', 'administrador'),
-(4, 108423200, 'Miguel AA', 'Perez Vargas', 'miguel@gmail.com', '123456789', '12345', 'usuario'),
+(4, 108423200, 'Miguel A', 'Perez Vargas', 'miguel@gmail.com', '123456789', '12345', 'usuario'),
 (7, 108423200, 'Pepito A', 'Perez Vargas', 'pepito@gmail.com', '1234567890', '1234', 'usuario'),
 (10, 12345, 'alejo p', 'pasaje', 'pasaje@gmail.com', '123456789', '123456', 'usuario'),
-(11, 0, '', '', '@', '', '', 'usuario');
+(14, 1234567890, 'qwe', 'pasaje', 'luci@12.com', '22121212', '1234567', 'usuario');
 
 -- --------------------------------------------------------
 
@@ -131,34 +110,24 @@ CREATE TABLE `vacunas` (
 --
 
 INSERT INTO `vacunas` (`id_vacuna`, `fk_id_mascota`, `fecha_vacuna`, `enfermedad`, `estado`, `fk_id_usuario`) VALUES
-(2, 2, '2022-12-22', 'Enfermdad contra el moquillo dos', 'Completa', 4),
-(3, 2, '2021-07-24', 'Enfermdad contra el moquillo', 'Completa', 4),
-(4, 2, '2021-07-24', 'Enfermdad contra el moquillo', 'Completa', 4),
-(5, 2, '2024-07-21', 'Enfermdad contra el moquillo', 'Completa', 4),
-(7, 2, '2024-07-22', 'Enfermdad contra el moquillo', 'Completa', NULL),
-(9, 2, '2024-07-22', 'Enfermdad contra el moquillo', 'Completa', NULL),
-(10, 2, '2024-07-22', 'Enfermdad contra el moquillo', 'Completa', NULL),
-(12, 3, '2024-07-07', 'qwe', 'Completa', NULL),
-(14, 3, '2024-07-07', 'qwe', 'Completa', NULL),
-(15, 2, '2024-07-03', 'moquillo', 'Completa', NULL),
-(16, 2, '2024-07-04', 'moquillo', 'En proceso', NULL),
-(17, 2, '2024-07-11', 'moquillodos', 'En proceso', NULL),
-(18, 33, '2024-07-12', 'qwe', 'Completa', NULL),
-(19, 33, '2024-07-07', 'loco', 'Completa', NULL),
-(20, 33, '2024-07-17', 'rabia ', 'Completa', NULL),
-(21, 33, '2024-07-25', 'cancer', 'Completa', NULL);
+(1, 2, '2024-07-01', 'Rabia', 'Completa', NULL),
+(2, 3, '2024-07-01', 'Rabia', 'Completa', NULL),
+(3, 4, '2024-07-01', 'Rabia', 'Completa', NULL),
+(4, 5, '2024-07-01', 'Rabia', 'Completa', NULL),
+(5, 6, '2024-07-01', 'Rabia', 'Completa', NULL),
+(6, 7, '2024-07-01', 'Rabia', 'Completa', NULL),
+(7, 8, '2024-07-01', 'Rabia', 'Completa', NULL),
+(8, 9, '2024-07-01', 'Rabia', 'Completa', NULL),
+(9, 10, '2024-07-01', 'Rabia', 'Completa', NULL),
+(10, 11, '2024-07-01', 'Rabia', 'Completa', NULL),
+(11, 12, '2024-07-01', 'Rabia', 'Completa', NULL),
+(12, 13, '2024-07-01', 'Rabia', 'Completa', NULL),
+(13, 14, '2024-07-01', 'Rabia', 'Completa', NULL),
+(14, 1, '2024-07-01', 'Rabia', 'Completa', NULL);
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `adopciones`
---
-ALTER TABLE `adopciones`
-  ADD PRIMARY KEY (`id_adopcion`),
-  ADD KEY `fk_id_mascota` (`fk_id_mascota`),
-  ADD KEY `fk_id_usuario_adoptante` (`fk_id_usuario_adoptante`);
 
 --
 -- Indices de la tabla `mascotas`
@@ -187,39 +156,26 @@ ALTER TABLE `vacunas`
 --
 
 --
--- AUTO_INCREMENT de la tabla `adopciones`
---
-ALTER TABLE `adopciones`
-  MODIFY `id_adopcion` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `vacunas`
 --
 ALTER TABLE `vacunas`
-  MODIFY `id_vacuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_vacuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `adopciones`
---
-ALTER TABLE `adopciones`
-  ADD CONSTRAINT `adopciones_ibfk_1` FOREIGN KEY (`fk_id_mascota`) REFERENCES `mascotas` (`id_mascota`),
-  ADD CONSTRAINT `adopciones_ibfk_2` FOREIGN KEY (`fk_id_usuario_adoptante`) REFERENCES `usuarios` (`id_usuario`);
 
 --
 -- Filtros para la tabla `mascotas`
