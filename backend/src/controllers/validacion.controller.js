@@ -6,7 +6,8 @@ import Jwt from "jsonwebtoken";
 export const validar = async (req, res) => {
 	try {
 		let { correo, password } = req.body;
-		let sql = `SELECT * from usuarios where correo='${correo}' and password='${password}'`;
+		// Añadir BINARY para hacer la comparación sensible a mayúsculas y minúsculas
+		let sql = `SELECT * FROM usuarios WHERE BINARY correo='${correo}' AND BINARY password='${password}'`;
 
 		const [rows] = await pool.query(sql);
 		if (rows.length > 0) {
@@ -19,7 +20,7 @@ export const validar = async (req, res) => {
 			return res.status(200).json({
 				user: rows,
 				token: token,
-				message: "token generado con éxito",
+				message: "Token generado con éxito",
 			});
 		} else {
 			return res.status(404).json({
@@ -30,10 +31,11 @@ export const validar = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({
 			status: 500,
-			message: "Error del servidor" + error,
+			message: "Error del servidor: " + error,
 		});
 	}
 };
+
 
 // verificar
 export const validarToken = async (req, res, next) => {

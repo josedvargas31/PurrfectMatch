@@ -9,8 +9,8 @@ import { validarToken } from "../controllers/validacion.controller.js";
 const usuarioRoutes = Router();
 
 usuarioRoutes.get("/listar", validarToken, listarUsuarios);
-usuarioRoutes.get('/perfil', validarToken, perfil);
-usuarioRoutes.put('/perfilactualizar/:identificacion', actualizarPerfil);
+usuarioRoutes.get('/listarPerfil', validarToken, perfil);
+usuarioRoutes.put('/actualizarPerfil/:identificacion', actualizarPerfil);
 usuarioRoutes.get("/buscar/:id_usuario", validarToken, buscarUsuario);
 usuarioRoutes.post("/registrar", /* validarToken, */ validateRegistroUsuario, registrarUsuario);
 usuarioRoutes.put("/actualizar/:id_usuario", validarToken, validateActualizarUsuario, actualizarUsuario);
