@@ -57,6 +57,8 @@ function IniciarSesion() {
                     title: "Bienvenido",
                     showConfirmButton: false,
                     timer: 1500
+                }).then(() => {
+                    window.location.reload(); // Recargar la página
                 });
 
                 const userRol = user[0]?.rol;

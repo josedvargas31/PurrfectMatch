@@ -6,7 +6,7 @@ function ListMascotaModal({ open, onClose, handleSubmit, actionLabel, title, ini
     return (
         <>
             <ModalAcciones open={open} title={title} onClose={onClose} >
-                <ListMascota mode={mode} initialData={initialData} handleSubmit={handleSubmit} actionLabel={actionLabel} />
+                <ListMascota mode={mode} initialData={initialData} handleSubmit={handleSubmit} onClose={onClose} actionLabel={actionLabel} />
             </ModalAcciones>
         </>
     )
