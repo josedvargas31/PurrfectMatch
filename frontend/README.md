@@ -1,8 +1,8 @@
-<h1 align="center">APP Móvil</h1>
+<h1 align="center">Frontend</h1>
 
 ### Arranque
 
 ```bash
 $ npm i
-$ npm start
+$ npm run dev
 ```
